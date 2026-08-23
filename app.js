@@ -428,9 +428,7 @@ function abreCajon(id, disparador) {
 
   $('#cajon-rotulo').textContent = esAcc ? 'Accesorio' : 'Vestido';
   $('#cajon-cuerpo').innerHTML = `
-    <div class="cajon-galeria${esAcc ? ' contenida' : ''}">
-      ${p.fotos.map((f, i) => img(f, '(min-width:40rem) 28rem, 92vw', altDe(p, i))).join('')}
-    </div>
+    <div class="cajon-galeria${esAcc ? ' contenida' : ''}" data-clona="${p.id}"></div>
     <h3 id="cajon-titulo">${esc(p.nombre)}</h3>
     <p style="color:var(--tinta-suave)">${esc(p.detalle)}</p>
 
@@ -466,6 +464,21 @@ function abreCajon(id, disparador) {
         ${icono('instagram-logo')} Ver la publicación original</a>
     </div>`;
 
+  /* Las fotos se clonan de la tarjeta en vez de volver a escribirlas: repetir sus
+     rutas en el JSON en linea eran 15 KB de HTML por nada. */
+  const galeria = $('#cajon-cuerpo .cajon-galeria[data-clona]');
+  if (galeria) {
+    $$('.pieza[data-id="' + id + '"] .pieza-foto img').forEach((fuente) => {
+      const copia = fuente.cloneNode(false);
+      copia.removeAttribute('class');
+      copia.removeAttribute('sizes');
+      /* si esa foto todavia no se habia cargado, se trae ahora */
+      if (copia.dataset.src) { copia.src = copia.dataset.src; delete copia.dataset.src; }
+      if (copia.dataset.srcset) { copia.srcset = copia.dataset.srcset; delete copia.dataset.srcset; }
+      galeria.appendChild(copia);
+    });
+  }
+
   const cajon = $('#cajon'), scrim = $('#scrim');
   Cajon.disparador = disparador || document.activeElement;
   cajon.hidden = false; scrim.hidden = false;
@@ -480,6 +493,21 @@ function abreCajon(id, disparador) {
 
 function cierraCajon() {
   if (!Cajon.abierto) return;
+  /* Las fotos se clonan de la tarjeta en vez de volver a escribirlas: repetir sus
+     rutas en el JSON en linea eran 15 KB de HTML por nada. */
+  const galeria = $('#cajon-cuerpo .cajon-galeria[data-clona]');
+  if (galeria) {
+    $$('.pieza[data-id="' + id + '"] .pieza-foto img').forEach((fuente) => {
+      const copia = fuente.cloneNode(false);
+      copia.removeAttribute('class');
+      copia.removeAttribute('sizes');
+      /* si esa foto todavia no se habia cargado, se trae ahora */
+      if (copia.dataset.src) { copia.src = copia.dataset.src; delete copia.dataset.src; }
+      if (copia.dataset.srcset) { copia.srcset = copia.dataset.srcset; delete copia.dataset.srcset; }
+      galeria.appendChild(copia);
+    });
+  }
+
   const cajon = $('#cajon'), scrim = $('#scrim');
   cajon.dataset.visible = 'no'; scrim.dataset.visible = 'no';
   document.body.dataset.cajon = '';
@@ -515,11 +543,53 @@ function pintaCatalogo() {
         </a>
       </figure>`).join('');
   }
+  ponCorazones();
+  ponSegundaFoto();
   pintaChips();
   aplicaFiltro();
   pintaFavoritos();
   Difiere.arranca();
   if (window.sofibelMira) window.sofibelMira();
+}
+
+/** La segunda foto, la que se ve al pasar el puntero, se monta solo donde hay
+ *  puntero fino. En un telefono no hay hover, asi que en el HTML viaja como una
+ *  ruta en data-rev y no como una etiqueta <img> de 250 caracteres. */
+function ponSegundaFoto() {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  $$('.pieza[data-rev]').forEach((pieza) => {
+    const caja = $('.pieza-foto', pieza);
+    if (!caja || $('.reverso', caja)) return;
+    const im = document.createElement('img');
+    im.className = 'reverso';
+    im.alt = '';
+    im.setAttribute('aria-hidden', 'true');
+    im.decoding = 'async';
+    im.dataset.src = pieza.dataset.rev;
+    if (pieza.dataset.revSet) im.dataset.srcset = pieza.dataset.revSet;
+    im.sizes = '(min-width:64rem) 20vw, (min-width:40rem) 30vw, 46vw';
+    caja.appendChild(im);
+  });
+}
+
+/** El corazon de favoritos se agrega aqui y no en el HTML.
+ *  Eran 33 botones con 67 referencias <use> de SVG, mas de la mitad del
+ *  documento, y sin JavaScript el boton no hace nada. */
+function ponCorazones() {
+  $$('.pieza[data-id]').forEach((pieza) => {
+    if ($('.corazon', pieza)) return;
+    const id = pieza.dataset.id;
+    const nombre = ($('.nombre', pieza) || {}).textContent || 'este';
+    const b = document.createElement('button');
+    b.className = 'corazon';
+    b.type = 'button';
+    b.setAttribute('aria-pressed', String(Tienda.favoritos.has(id)));
+    b.dataset.fav = id;
+    b.setAttribute('aria-label', 'Guardar ' + nombre + ' para mi cita');
+    b.innerHTML = icono('heart') +
+      '<svg class="icono lleno" aria-hidden="true"><use href="#i-heart-fill"></use></svg>';
+    pieza.prepend(b);
+  });
 }
 
 /* ---------------------------- 6. reels --------------------------------- */

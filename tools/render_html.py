@@ -38,8 +38,9 @@ def img(foto, sizes, alt, extra='', ya=False):
              f'alt="{esc(alt)}" decoding="async" {extra}')
     if ya:
         return f'<img src="{grande["src"]}" srcset="{srcset}" {comun} fetchpriority="high">'
-    return (f'<img data-src="{grande["src"]}" data-srcset="{srcset}" {comun}>'
-            f'<noscript><img src="{grande["src"]}" srcset="{srcset}" {comun} loading="lazy"></noscript>')
+    # Sin copia en <noscript>: duplicaba 51 etiquetas <img> en un documento que ya
+    # era de 157 KB, y en un iPhone eso pesa mas de lo que valia el caso.
+    return f'<img data-src="{grande["src"]}" data-srcset="{srcset}" {comun}>'
 
 def alt_de(p, i=0):
     que = p['tipo'].lower() if p['tipoItem'] == 'accesorio' else 'vestido'
@@ -49,6 +50,12 @@ def alt_de(p, i=0):
 SIZES_REJILLA = '(min-width:64rem) 20vw, (min-width:40rem) 30vw, 46vw'
 
 def tarjeta(p, i):
+    """El corazon de favoritos NO se escribe aqui: lo pone app.js.
+
+    Eran 33 botones con 67 referencias <use> de SVG, o sea mas de la mitad del
+    documento, y sin JavaScript el boton no hace nada. Ponerlo desde JS baja el
+    peso del HTML sin perder nada.
+    """
     ya = i < 6
     f1 = p['fotos'][0]
     f2 = p['fotos'][1] if len(p['fotos']) > 1 else None
@@ -58,17 +65,20 @@ def tarjeta(p, i):
         precio = f'<span class="precio num">Renta ${p["precioRenta"]:,}</span>'.replace(',', ',')
     else:
         precio = '<span class="sin-precio">Precio por WhatsApp</span>'
+    # La segunda foto (la del hover) va como atributo, no como <img>. En un
+    # telefono no hay hover, y una etiqueta completa cuesta cinco veces mas que
+    # su ruta. app.js la monta solo en aparatos con puntero fino.
+    rev = ''
+    if f2:
+        v = f2['variantes']
+        conjunto = ', '.join('%s %dw' % (x['src'], x['w']) for x in v)
+        rev = ' data-rev="%s" data-rev-set="%s"' % (esc(v[-1]['src']), esc(conjunto))
     return f'''<article class="pieza" data-id="{esc(p['id'])}"
       data-ocasion="{esc(' '.join(p.get('ocasion') or []))}" data-color="{esc(p['color'])}"
-      data-largo="{esc(p.get('largo') or '')}" data-tela="{esc(p.get('tela') or '')}">
-    <button class="corazon" type="button" aria-pressed="false" data-fav="{esc(p['id'])}"
-        aria-label="Guardar {esc(p['nombre'])} para mi cita">
-      <svg class="icono" aria-hidden="true"><use href="#i-heart"></use></svg><svg class="icono lleno" aria-hidden="true"><use href="#i-heart-fill"></use></svg>
-    </button>
+      data-largo="{esc(p.get('largo') or '')}" data-tela="{esc(p.get('tela') or '')}"{rev}>
     <a class="pieza-boton" href="{esc(f1['origen'])}" data-abre="{esc(p['id'])}">
       <span class="pieza-foto">
         {img(f1, SIZES_REJILLA, alt_de(p), 'class="frente"', ya)}
-        {img(f2, SIZES_REJILLA, alt_de(p, 1), 'class="reverso"') if f2 else ''}
       </span>
       <span class="pieza-pie">
         <span class="nombre">{esc(p['nombre'])}</span>
@@ -130,7 +140,15 @@ def main():
 
     # los datos, en línea: la ficha del cajón los necesita y así no hay un fetch
     # más que pueda fallar. Se escapa < para que nada pueda cerrar el <script>.
-    crudo = json.dumps(d, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
+    # Se van las rutas de las fotos: la ficha clona las imagenes que ya estan en la
+    # tarjeta, asi que repetirlas aqui eran 15 KB de HTML por nada.
+    liviano = json.loads(json.dumps(d))
+    for grupo in ('vestidos', 'accesorios'):
+        for it in liviano[grupo]:
+            it['fotos'] = [{'origen': f['origen']} for f in it['fotos']]
+    for l in liviano['lookbook']:
+        l.pop('variantes', None)
+    crudo = json.dumps(liviano, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
     doc = mete(doc, 'DATOS', f'<script type="application/json" id="datos-sofibel">{crudo}</script>')
 
     open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(doc)
