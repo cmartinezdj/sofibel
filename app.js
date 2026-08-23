@@ -973,6 +973,17 @@ document.addEventListener('click', (e) => {
     return;
   }
 
+  /* Los mosaicos de ocasion y el boton de la banda editorial filtran el
+     catalogo y bajan a el, en vez de solo saltar al ancla. */
+  const filtra = e.target.closest('[data-filtra]');
+  if (filtra) {
+    e.preventDefault();
+    Tienda.filtro = { ocasion: filtra.dataset.filtra, color: '', largo: '', tela: '', soloFavoritos: false };
+    aplicaFiltro();
+    $('#vestidos').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    return;
+  }
+
   const chip = e.target.closest('.chip');
   if (chip) {
     const k = chip.dataset.f, v = chip.dataset.v;

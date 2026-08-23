@@ -1647,5 +1647,72 @@
    ],
    "origen": "https://www.instagram.com/p/DZlrDj_jHdM/"
   }
+ ],
+ "mosaicos": [
+  {
+   "ocasion": "noche",
+   "variantes": [
+    {
+     "w": 360,
+     "src": "images/vestidos/mosaico-noche-360.webp"
+    },
+    {
+     "w": 640,
+     "src": "images/vestidos/mosaico-noche-640.webp"
+    }
+   ]
+  },
+  {
+   "ocasion": "graduacion",
+   "variantes": [
+    {
+     "w": 360,
+     "src": "images/vestidos/mosaico-graduacion-360.webp"
+    },
+    {
+     "w": 640,
+     "src": "images/vestidos/mosaico-graduacion-640.webp"
+    }
+   ]
+  },
+  {
+   "ocasion": "xv",
+   "variantes": [
+    {
+     "w": 360,
+     "src": "images/vestidos/mosaico-xv-360.webp"
+    },
+    {
+     "w": 640,
+     "src": "images/vestidos/mosaico-xv-640.webp"
+    }
+   ]
+  },
+  {
+   "ocasion": "boda",
+   "variantes": [
+    {
+     "w": 360,
+     "src": "images/vestidos/mosaico-boda-360.webp"
+    },
+    {
+     "w": 640,
+     "src": "images/vestidos/mosaico-boda-640.webp"
+    }
+   ]
+  },
+  {
+   "ocasion": "dia",
+   "variantes": [
+    {
+     "w": 360,
+     "src": "images/vestidos/mosaico-dia-360.webp"
+    },
+    {
+     "w": 640,
+     "src": "images/vestidos/mosaico-dia-640.webp"
+    }
+   ]
+  }
  ]
 }

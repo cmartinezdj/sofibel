@@ -237,6 +237,23 @@ VIDEOS = {
  'rojo-hombros-caidos':   'DYDnAcIBK_D',
 }
 
+# Mosaicos de ocasion: una foto por ocasion, en 4:5, para el patron de tarjetas
+# fotograficas que usan las rentadoras (Hauteline, Rebecca Vallance). Se navega
+# por ocasion porque asi busca la clienta: "voy a una boda", no "quiero satin".
+# El encuadre importa: si el vestido queda chico en el mosaico, el mosaico no
+# vende. fx y fy son el centro del recorte, de 0 a 1.
+# (id, archivo, fx, fy, etiqueta, acercamiento). El acercamiento es la fraccion
+# de la foto que se usa: 1 es la foto completa, 0.6 se mete mas. Hace falta
+# porque una foto que ya viene en 4:5 no se recorta y fx/fy no hacen nada.
+MOSAICOS = [
+ ('noche',      'Dbo2qKnRTpD-1.jpg',  .50, .34, 'Noche y gala',     1.0),
+ ('graduacion', 'DXcl1MqlMDS-1.jpg',  .50, .36, 'Graduacion',       1.0),
+ ('xv',         'DZlrDj_jHdM-3.jpg',  .52, .60, 'XV anos',          0.62),
+ ('boda',       'DawP7I0OnXe-1.jpg',  .50, .33, 'Boda de invitada', 1.0),
+ ('dia',        'Day00i0BYo8-1.jpg',  .50, .34, 'Evento de dia',    1.0),
+]
+RATIO_MOSAICO = 4 / 5
+
 EXTRAS = [
  # (archivo, x0, y0, x1, y1, slug)  recorte manual en píxeles de la foto original
  ('Db6nJ0NFJEI-1.jpg', 95, 380, 742, 1350, 'manifiesto-1'),
@@ -308,6 +325,32 @@ def main():
             print(f"  {e['id']:28s} {len(fotos)} foto(s)  {sum(len(f['variantes']) for f in fotos)} webp")
         return salida
 
+    print('Mosaicos de ocasion:')
+    mosaicos = []
+    for oid, arch, fx, fy, etiqueta, acerca in MOSAICOS:
+        im = Image.open(os.path.join(SRC, arch)).convert('RGB')
+        if acerca < 1:
+            cw, ch = int(im.width * acerca), int(im.height * acerca)
+            cx = min(max(int(fx * im.width - cw / 2), 0), im.width - cw)
+            cy = min(max(int(fy * im.height - ch / 2), 0), im.height - ch)
+            im = im.crop((cx, cy, cx + cw, cy + ch))
+        w, h = im.size
+        if w / h > RATIO_MOSAICO:
+            nw, nh = int(round(h * RATIO_MOSAICO)), h
+        else:
+            nw, nh = w, int(round(w / RATIO_MOSAICO))
+        x = min(max(int(round(fx * w - nw / 2)), 0), w - nw)
+        y = min(max(int(round(fy * h - nh / 2)), 0), h - nh)
+        rec = im.crop((x, y, x + nw, y + nh))
+        var = []
+        for a in (360, 640):
+            r = rec.resize((a, int(round(a / RATIO_MOSAICO))), Image.LANCZOS)
+            f = f'mosaico-{oid}-{a}.webp'
+            guarda_bajo_techo(r, os.path.join(OUT, f), 34 if a == 360 else 78)
+            var.append({'w': a, 'src': f'images/vestidos/{f}'})
+        mosaicos.append({'ocasion': oid, 'variantes': var})
+        print(f'  mosaico-{oid}  {rec.size}')
+
     print('Extras:')
     for arch, x0, y0, x1, y1, slug in EXTRAS:
         im = Image.open(os.path.join(SRC, arch)).convert('RGB').crop((x0, y0, x1, y1))
@@ -339,6 +382,7 @@ def main():
         {'id': 'dia',        'nombre': 'Evento de día'},
       ],
       'vestidos': vestidos, 'accesorios': accesorios, 'lookbook': look,
+      'mosaicos': mosaicos,
     }
     with open(os.path.join(ROOT, 'data', 'vestidos.json'), 'w') as fh:
         json.dump(data, fh, ensure_ascii=False, indent=1)

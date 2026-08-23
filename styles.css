@@ -246,11 +246,24 @@ h1 {
   letter-spacing: -0.022em;   /* tracking negativo: crece el cuerpo, se junta */
   font-weight: 300;
 }
+/* Los titulos de seccion van en mayusculas rastreadas y sans, no en serif: es
+   el registro de una tienda, y el serif se reserva para el titular de portada
+   y para los momentos editoriales. */
 h2 {
-  font-size: clamp(2.2rem, 1.4rem + 3.1vw, 3.9rem);
-  line-height: 1.02;
+  font-family: var(--texto);
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.5rem);
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+h2.display, .editorial h2 {
+  font-family: var(--display);
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.4rem);
   letter-spacing: -0.016em;
+  text-transform: none;
   font-weight: 300;
+  line-height: 1.04;
 }
 h3 {
   font-size: clamp(1.45rem, 1.2rem + 0.9vw, 1.9rem);
@@ -275,6 +288,9 @@ em { font-style: italic; }
 /* --------------------------------------------------------------- 4. armazón */
 .env { width: 100%; max-width: var(--ancho); margin-inline: auto; padding-inline: var(--canal); }
 section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
+/* Bandas alternadas de papel y blush, como en las tiendas: separan sin líneas. */
+.blush { background: var(--tarjeta); }
+.a-sangre { padding-block: 0; }
 .cabecera-seccion { display: grid; gap: 0.9rem; margin-bottom: clamp(2.2rem, 1.5rem + 2.5vw, 3.6rem); }
 .cabecera-seccion p { max-width: 54ch; }
 
@@ -290,9 +306,10 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
   border: 1px solid transparent;
   border-radius: var(--r-pill);
   font-family: var(--texto);
-  font-size: 0.9375rem;
+  font-size: 0.78rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.14em;         /* mayusculas rastreadas, como en las rentadoras */
+  text-transform: uppercase;
   white-space: nowrap;            /* una CTA nunca parte en dos renglones */
   text-decoration: none;
   cursor: pointer;
@@ -307,7 +324,7 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 }
 .btn-secundario { border-color: var(--borde-campo); color: var(--tinta); }
 .btn-fantasma { color: var(--tinta); padding-inline: 0.9rem; }
-.btn-grande { --alto: 3.4rem; padding-inline: 1.85rem; font-size: 1rem; }
+.btn-grande { --alto: 3.4rem; padding-inline: 2.1rem; font-size: 0.82rem; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn:disabled:active { transform: none; }
 
@@ -328,29 +345,49 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 .btn-icono:active { transform: scale(0.94); }
 @media (hover: hover) and (pointer: fine) { .btn-icono:hover { background: var(--chip); } }
 
+/* ------------------------------------------------------- 5b. barra de anuncio */
+/* Una linea en color de marca arriba de todo, como en las rentadoras: es el
+   lugar mas barato para decir lo unico que importa saber de entrada. */
+.aviso {
+  background: var(--rosa-honda);
+  color: var(--sobre-rosa);
+  text-align: center;
+  padding: 0.55rem var(--canal);
+}
+.aviso p {
+  margin: 0 auto; max-width: none;
+  font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+}
+.aviso a { color: inherit; text-decoration: underline; text-underline-offset: 0.2em; }
+
 /* ------------------------------------------------------------ 6. navegación */
+/* Logotipo al centro y dos filas, como las rentadoras. En movil colapsa a una
+   fila con el menu a la izquierda y el logo centrado. */
 .nav {
   position: sticky; top: 0; z-index: var(--z-nav);
-  height: 4.25rem;                       /* 68px, bajo el techo de 80 */
-  display: flex; align-items: center;
   background: var(--velo-papel);
   backdrop-filter: blur(18px) saturate(170%);
   -webkit-backdrop-filter: blur(18px) saturate(170%);
   border-bottom: 1px solid transparent;
-  transition: border-color 200ms ease, background-color 200ms ease;
+  transition: border-color 200ms ease;
 }
 .nav[data-pegado="si"] { border-bottom-color: var(--filete); }
-.nav > .env { display: flex; align-items: center; gap: clamp(0.5rem, 2vw, 2.2rem); }
 
-.marca { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; margin-right: auto; }
-.marca img { width: auto; height: 1.5rem; }
-.marca .bajada {
-  display: none;
-  font-size: 0.64rem; font-weight: 400; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--tinta-suave);
-  padding-left: 0.7rem; border-left: 1px solid var(--filete);
+.nav-fila {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; gap: 0.5rem;
+  min-height: 3.5rem;
 }
-@media (min-width: 62rem) { .marca .bajada { display: block; } }
+.nav-izq, .nav-der { display: flex; align-items: center; gap: 0.15rem; }
+.nav-der { justify-content: flex-end; }
+
+.marca { display: grid; justify-items: center; gap: 0.25rem; text-decoration: none; }
+.marca img { width: auto; height: 1.45rem; }
+.marca .bajada {
+  font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--tinta-suave);
+}
 .logo-claro { display: block; }
 .logo-oscuro { display: none; }
 :root[data-theme="dark"] .logo-claro { display: none; }
@@ -360,31 +397,44 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
   :root:not([data-theme="light"]) .logo-oscuro { display: block; }
 }
 
-.nav-enlaces { display: none; align-items: center; gap: clamp(0.9rem, 1.6vw, 1.9rem); }
-@media (min-width: 64rem) { .nav-enlaces { display: flex; } }
+/* segunda fila: las secciones, centradas */
+.nav-enlaces {
+  display: none;
+  justify-content: center; align-items: center;
+  gap: clamp(1rem, 2.4vw, 2.4rem);
+  padding-bottom: 0.7rem;
+}
+@media (min-width: 60rem) { .nav-enlaces { display: flex; } }
 .nav-enlaces a {
   color: var(--tinta); text-decoration: none;
-  font-size: 0.9rem; letter-spacing: 0.02em;
-  padding-block: 0.4rem;
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  padding-block: 0.3rem;
   border-bottom: 1px solid transparent;
   transition: color 180ms ease, border-color 180ms ease;
 }
 @media (hover: hover) and (pointer: fine) {
   .nav-enlaces a:hover { color: var(--rosa-honda); border-bottom-color: var(--rosa); }
 }
-.nav-acciones { display: flex; align-items: center; gap: 0.35rem; }
+.nav-como {
+  display: none;
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--tinta); text-decoration: none;
+  padding: 0.4rem 0.2rem;
+}
+@media (min-width: 60rem) { .nav-como { display: block; } }
 .nav .btn-primario { display: none; }
-@media (min-width: 48rem) { .nav .btn-primario { display: inline-flex; } }
+@media (min-width: 60rem) { .nav .btn-primario { display: inline-flex; } }
 #abrir-menu { display: grid; }
-@media (min-width: 64rem) { #abrir-menu { display: none; } }
+@media (min-width: 60rem) { #abrir-menu { display: none; } }
 
 .contador-favoritos {
   position: absolute; transform: translate(0.85rem, -0.85rem);
-  min-width: 1.1rem; height: 1.1rem; padding: 0 0.25rem;
+  min-width: 1.05rem; height: 1.05rem; padding: 0 0.22rem;
   display: grid; place-items: center;
   background: var(--rosa-honda); color: var(--sobre-rosa);
   border-radius: var(--r-pill);
-  font-size: 0.66rem; font-weight: 500;
+  font-size: 0.62rem; font-weight: 500;
 }
 .btn-icono { position: relative; }
 .contador-favoritos[hidden] { display: none; }
@@ -393,64 +443,60 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 .menu-movil {
   position: fixed; inset: 0; z-index: var(--z-cajon);
   display: grid; align-content: start; gap: 0.2rem;
-  padding: 5.5rem var(--canal) 2rem;
+  padding: 5rem var(--canal) 2rem;
   background: var(--papel);
-  opacity: 0;
-  transform: translateY(-1.5%);
+  opacity: 0; transform: translateY(-1.5%);
   transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+  overflow-y: auto;
 }
 .menu-movil[hidden] { display: none; }
 .menu-movil[data-visible="si"] { opacity: 1; transform: translateY(0); }
 .menu-movil a {
-  font-family: var(--display); font-size: 2rem; font-weight: 300;
+  font-size: 0.9rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--tinta); text-decoration: none;
-  padding-block: 0.55rem; border-bottom: 1px solid var(--filete);
+  padding-block: 0.95rem; border-bottom: 1px solid var(--filete);
 }
 .menu-movil .btn { margin-top: 1.6rem; }
 #cerrar-menu { position: absolute; top: 0.8rem; right: var(--canal); }
 
 /* --------------------------------------------------------------- 7. portada */
+/* A sangre, sin marco ni sombras: la foto llega hasta la orilla. Es lo que
+   separa visualmente a una tienda de un folleto. */
 .portada {
   position: relative;
-  min-height: min(100vh, 54rem);   /* respaldo para Safari < 15.4 */
-  min-height: min(100dvh, 54rem);
-  display: grid; align-items: center;
-  padding-top: clamp(2rem, 1rem + 4vw, 5rem);   /* techo de pt-24 respetado */
-  padding-bottom: clamp(3rem, 2rem + 4vw, 5rem);
-  overflow: clip;
+  display: grid; grid-template-columns: 1fr;
+  background: var(--tarjeta);
 }
-.portada::before {          /* velo rosa que sube desde el pie, decorativo */
-  content: ""; position: absolute; inset: auto 0 0 0; height: 62%;
-  background: linear-gradient(to top, var(--velo-rosa), transparent);
-  pointer-events: none;
+@media (min-width: 56rem) {
+  .portada { grid-template-columns: 1fr 1fr; min-height: min(82dvh, 46rem); }
 }
-.portada > .env {
-  position: relative;
-  display: grid; gap: clamp(2.5rem, 2rem + 4vw, 4.5rem);
-  grid-template-columns: 1fr;
+.portada-copia {
+  display: grid; gap: clamp(1.1rem, 0.9rem + 1vw, 1.8rem);
+  align-content: center; justify-items: start;
+  padding: clamp(3rem, 2rem + 6vw, 6rem) var(--canal);
 }
-@media (min-width: 60rem) {
-  .portada > .env { grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr); align-items: center; }
+@media (min-width: 56rem) {
+  .portada-copia { padding-left: max(var(--canal), calc((100vw - var(--ancho)) / 2 + var(--canal))); }
 }
-.portada-copia { display: grid; gap: clamp(1.4rem, 1rem + 1.4vw, 2.1rem); justify-items: start; }
-.portada-copia h1 { max-width: 15ch; }
-.portada-copia .entrada { max-width: 38ch; }
-.portada-ctas { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+.portada-copia h1 {
+  font-size: clamp(2.5rem, 1.5rem + 4.6vw, 4.4rem);
+  max-width: 16ch;
+}
+.portada-copia .entrada { max-width: 36ch; }
+.portada-ctas { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 
-/* dos fotos desfasadas: asimetría declarada, no matemática de flex */
-.portada-fotos {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  grid-auto-rows: clamp(1.6rem, 1.1rem + 1.9vw, 2.9rem);
+/* En telefono la foto lleva proporcion fija, no altura en vh: con vh el recorte
+   cambia con cada aparato y en pantallas altas se acercaba tanto que solo se
+   veia el pelo. 4:5 deja ver el escote y el talle, que es lo que se compra. */
+.portada-foto { position: relative; overflow: hidden; aspect-ratio: 4 / 5; }
+@media (min-width: 56rem) { .portada-foto { aspect-ratio: auto; min-height: 0; } }
+.portada-foto img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 22%;
 }
-.portada-fotos figure { margin: 0; overflow: hidden; border-radius: var(--r-borde); background: var(--tarjeta); }
-.portada-fotos img { width: 100%; height: 100%; object-fit: cover; }
-.portada-fotos .f1 { grid-column: 1 / 7;  grid-row: 1 / 12; box-shadow: var(--sombra-2); }
-.portada-fotos .f2 { grid-column: 6 / 10; grid-row: 7 / 16; box-shadow: var(--sombra-3); }
-@media (max-width: 37.5rem) {
-  .portada-fotos { grid-template-columns: repeat(8, 1fr); }
-  .portada-fotos .f1 { grid-column: 1 / 7; grid-row: 1 / 11; }
-  .portada-fotos .f2 { grid-column: 5 / 9; grid-row: 7 / 15; }
+@supports not (aspect-ratio: 2 / 3) {
+  .portada-foto { height: 0; padding-top: 125%; }
+  @media (min-width: 56rem) { .portada-foto { height: auto; padding-top: 0; } }
 }
 
 /* --------------------------------------------------------- 8. cinta de datos */
@@ -481,6 +527,68 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 .manifiesto .firma {
   font-family: var(--display); font-style: italic; font-size: 1.35rem;
   line-height: 1.2; padding-bottom: 0.08em;
+}
+
+/* --------------------------------------------------- 9b. mosaicos de ocasión */
+/* Una foto por ocasión en vez de una fila de chips. La clienta busca por
+   evento ("voy a una boda"), no por tela, y una foto decide más rápido. */
+.mosaicos {
+  display: grid; gap: clamp(0.6rem, 0.4rem + 0.8vw, 1rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 46rem) { .mosaicos { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 72rem) { .mosaicos { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.mosaico {
+  position: relative; display: block;
+  aspect-ratio: 4 / 5; overflow: hidden;
+  border-radius: var(--r-borde); background: var(--tarjeta-2);
+  text-decoration: none;
+}
+.mosaico img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 26%;
+  transition: transform 320ms var(--ease-out);
+}
+.mosaico::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgb(24 14 16 / .62), rgb(24 14 16 / .06) 55%, transparent);
+}
+.mosaico span {
+  position: absolute; inset: auto 0 0 0; z-index: 1;
+  padding: 0.9rem 0.75rem;
+  color: #FFFFFF; text-align: center;
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+@media (hover: hover) and (pointer: fine) {
+  .mosaico:hover img { transform: scale(1.05); }
+}
+@supports not (aspect-ratio: 2 / 3) { .mosaico { height: 0; padding-top: 125%; } }
+
+/* ------------------------------------------------- 9c. banda editorial */
+/* Foto a sangre con un rótulo y un botón. Rompe el ritmo del catálogo y manda
+   a una parte concreta de él, como las bandas de las rentadoras. */
+.banda { position: relative; display: grid; }
+.banda-foto { position: relative; min-height: clamp(20rem, 46vw, 30rem); overflow: hidden; }
+.banda-foto img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 24%;
+}
+.banda-foto::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgb(24 14 16 / .58), rgb(24 14 16 / .12));
+}
+.banda-copia {
+  position: absolute; inset: auto 0 0 0; z-index: 1;
+  display: grid; gap: 0.9rem; justify-items: center; text-align: center;
+  padding: 0 var(--canal) clamp(2rem, 1.5rem + 2vw, 3.2rem);
+  color: #FFFFFF;
+}
+.banda-copia h2 { color: #FFFFFF; }
+.banda-copia p { color: rgb(255 255 255 / .88); max-width: 42ch; font-size: 0.95rem; }
+.banda-copia .btn-secundario { border-color: rgb(255 255 255 / .7); color: #FFFFFF; }
+@media (hover: hover) and (pointer: fine) {
+  .banda-copia .btn-secundario:hover { background: #FFFFFF; color: var(--tinta); border-color: #FFFFFF; }
 }
 
 /* ------------------------------------------------------------- 10. catálogo */
@@ -563,6 +671,8 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 
 .pieza-pie { display: grid; gap: 0.2rem; }
 .pieza-pie .nombre { font-size: clamp(0.86rem, 0.8rem + 0.25vw, 0.95rem); font-weight: 400; line-height: 1.3; }
+.pieza-pie .meta { order: -1; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.62rem; }
+.pieza-pie { gap: 0.28rem; }
 .pieza-pie .meta { font-size: clamp(0.72rem, 0.68rem + 0.18vw, 0.8rem); color: var(--tinta-suave); }
 .pieza-pie .precio { font-size: 0.875rem; font-weight: 500; }
 .pieza-pie .sin-precio { font-size: clamp(0.72rem, 0.68rem + 0.18vw, 0.8rem); color: var(--rosa-honda); }
@@ -627,6 +737,23 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
   border-top: 1px solid var(--filete);
 }
 .pasos li:last-child { border-bottom: 1px solid var(--filete); }
+/* En cuadricula de tarjetas cuando hay espacio, como los cuatro pasos de las
+   rentadoras, en vez de una lista larga. */
+@media (min-width: 62rem) {
+  .proceso.tarjetas > .env { grid-template-columns: 1fr; }
+  .proceso.tarjetas .cabecera-seccion { position: static; text-align: center; justify-items: center; }
+  .proceso.tarjetas .pasos {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 0.6rem + 1.4vw, 2rem);
+  }
+  .proceso.tarjetas .pasos li {
+    grid-template-columns: 1fr; gap: 0.5rem;
+    border: 0; border-top: 2px solid var(--rosa);
+    padding-block: 1.4rem 0;
+  }
+  .proceso.tarjetas .pasos li:last-child { border-bottom: 0; }
+  .proceso.tarjetas .pasos .num-paso { grid-row: auto; font-size: 1.6rem; }
+}
 .pasos .num-paso {
   grid-row: 1 / span 2;
   font-family: var(--display); font-size: 2.5rem; line-height: 0.8;

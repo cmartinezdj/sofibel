@@ -135,6 +135,37 @@ WhatsApp, para que sobreviva a la navegación.
 
 ---
 
+## Referencia visual: hauteline.com
+
+Carlos pidio "una pagina parecida a esta" apuntando a [hauteline.com](https://hauteline.com).
+Lo que se tomo de ahi y lo que no:
+
+**Se tomo:**
+- **Barra de anuncio** arriba de todo, en color de marca, con una linea en mayusculas.
+- **Logotipo centrado y nav de dos filas**, todo en mayusculas rastreadas (0.14-0.16em).
+  Es lo que mas cambia el registro: de folleto a tienda.
+- **Heroe a sangre**, sin marco ni sombra: la foto llega hasta la orilla.
+- **Mosaicos de ocasion con foto** en vez de una fila de chips. La clienta busca
+  por evento ("voy a una boda"), no por tela, y una foto decide mas rapido.
+  Cada mosaico filtra el catalogo al tocarlo.
+- **Banda editorial** a sangre: foto grande, rotulo y boton a una parte del catalogo.
+- **Titulos de seccion en mayusculas y sans.** El serif se reserva para el titular
+  de portada y los momentos editoriales.
+- **Fondos alternados** papel y blush, que separan secciones sin lineas.
+- **Cuatro pasos en tarjetas** en escritorio, no una lista larga.
+
+**No se tomo, a proposito:**
+- Su **verde olivo** (#808160). Es la identidad de Hauteline; SOFIBEL tiene la suya,
+  el rosa #D8908B que sale de su propio logotipo.
+- **Designers, Sale, Rewards, carrito y checkout.** Hauteline es e-commerce nacional
+  con miles de piezas de disenador y envios. SOFIBEL es una boutique de una sola
+  ubicacion que trabaja con cita. Copiar esos menus seria prometer lo que no hay.
+- El formato de precio **"Rent from $X / Retail $Y"** esta bien y es el patron que
+  mas convierte, pero necesita precios. La estructura ya esta lista en la tarjeta;
+  falta que la dueña los de.
+
+---
+
 ## El orden de la pagina, y por que
 
 El sitio NO sigue el orden de Instagram. Sigue el flujo de las rentadoras que

@@ -98,6 +98,19 @@ def figura_look(l, i):
       </a>
     </figure>'''
 
+def mosaico(m, nombres):
+    v = m['variantes']
+    grande = v[-1]
+    srcset = ', '.join('%s %dw' % (x['src'], x['w']) for x in v)
+    etiqueta = nombres.get(m['ocasion'], m['ocasion'])
+    return (f'<a class="mosaico" href="#vestidos" data-filtra="{esc(m["ocasion"])}">'
+            f'<img src="{grande["src"]}" srcset="{srcset}" '
+            f'sizes="(min-width:72rem) 19vw, (min-width:46rem) 31vw, 47vw" '
+            f'width="{grande["w"]}" height="{round(grande["w"] * 5 / 4)}" loading="lazy" '
+            f'decoding="async" alt="Vestidos para {esc(etiqueta.lower())} en SOFIBÉL.">'
+            f'<span>{esc(etiqueta)}</span></a>')
+
+
 def chip_ocasion(o, n):
     return (f'<button class="chip" type="button" aria-pressed="false" data-f="ocasion" '
             f'data-v="{esc(o["id"])}">{esc(o["nombre"])}</button>')
@@ -123,6 +136,9 @@ def main():
     chips = ('<button class="chip" type="button" aria-pressed="true" data-f="ocasion" data-v="">Todos</button>\n'
              + '\n'.join(chip_ocasion(o, 0) for o in usadas))
     doc = mete(doc, 'CHIPS', chips)
+
+    nombres = {o['id']: o['nombre'] for o in d['ocasiones']}
+    doc = mete(doc, 'MOSAICOS', '\n'.join(mosaico(m, nombres) for m in d.get('mosaicos', [])))
 
     # los datos, en línea: la ficha del cajón los necesita y así no hay un fetch
     # más que pueda fallar. Se escapa < para que nada pueda cerrar el <script>.
