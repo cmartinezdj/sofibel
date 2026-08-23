@@ -135,6 +135,28 @@ WhatsApp, para que sobreviva a la navegación.
 
 ---
 
+## Peso: la regla que no hay que romper
+
+Carlos reporto que en **WiFi si abria y en 4G no**. Era peso, no red. Historial de la
+primera carga en un telefono, medido:
+
+| | Primera carga | 4G malo (1.5 Mbps) |
+|---|---|---|
+| Al principio | 5,350 KB | 29 s |
+| Con carga diferida propia | 434 KB | 2.3 s |
+| Sin prioridad en fotos de abajo | **214 KB** | **1.1 s** |
+
+El error grande, y el que mas costo encontrar: **seis fotos del catalogo salian con
+`fetchpriority="high"`**, y el catalogo esta a 20,000 caracteres del inicio del
+documento. Eran ~350 KB compitiendo con la portada antes de que se viera nada. En WiFi
+no se nota; en 4G mata la carga.
+
+**Regla:** con prioridad alta va **solo** la foto grande de la portada. Todo lo demas
+se difiere. `tools/render_html.py` ya lo hace (`ya = False` para todas las tarjetas);
+si alguien lo cambia, hay que volver a medir.
+
+---
+
 ## Si la red de alguien no alcanza `github.io`
 
 Pasa, y no hay nada que arreglar en el codigo: **GitHub Pages sirve desde las IPs

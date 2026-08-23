@@ -56,7 +56,10 @@ def tarjeta(p, i):
     documento, y sin JavaScript el boton no hace nada. Ponerlo desde JS baja el
     peso del HTML sin perder nada.
     """
-    ya = i < 6
+    # NINGUNA foto del catalogo se pide con prioridad: el catalogo esta muy abajo
+    # del pliegue. Marcar seis con fetchpriority="high" ponia ~350 KB a competir
+    # con la portada antes de que se viera nada, y en 4G eso mataba la carga.
+    ya = False
     f1 = p['fotos'][0]
     f2 = p['fotos'][1] if len(p['fotos']) > 1 else None
     meta = (f"{p['tipo']} · {p['color']}" if p['tipoItem'] == 'accesorio'
