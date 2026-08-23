@@ -135,6 +135,33 @@ WhatsApp, para que sobreviva a la navegación.
 
 ---
 
+## Si la red de alguien no alcanza `github.io`
+
+Pasa, y no hay nada que arreglar en el codigo: **GitHub Pages sirve desde las IPs
+`185.199.108-111.153`, y muchos filtros de operadora y de red corporativa bloquean el
+dominio `github.io` completo** porque ahi vive contenido de cualquiera. Sintoma tipico:
+la pagina se tarda mucho y termina en blanco, sin error.
+
+Para esos casos hay una version en **un solo archivo**, sin ninguna peticion externa:
+fuentes, fotos y logos van como data URI, y el CSS y el JS en linea.
+
+```bash
+python3 tools/build_artifact.py
+```
+
+Genera `sofibel-un-archivo.html` (1.9 MB). Se puede abrir con doble clic, mandar por
+correo o publicar en cualquier otro dominio. Diferencias con el sitio completo: una foto
+por pieza a 320 px, los reels enlazan a Instagram en vez de reproducirse, el mapa es una
+tarjeta de texto, y no hay descarga de `.ics` (solo Google Calendar).
+
+**La solucion de fondo es un dominio propio** (por ejemplo `sofibel.mx`) apuntado a
+GitHub Pages: los filtros casi siempre bloquean por nombre de dominio, no por IP, asi que
+un dominio propio pasa. Ojo con el orden, que ya nos morfio antes: no pongas el dominio
+en la configuracion de Pages antes de que el DNS resuelva, porque el 301 rompe el enlace
+de `github.io` mientras tanto.
+
+---
+
 ## Ver el sitio en local
 
 macOS bloquea servir desde `~/Documents`, así que conviene copiarlo a `/tmp`:

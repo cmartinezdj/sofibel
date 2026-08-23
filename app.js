@@ -596,6 +596,7 @@ bloque('ubicacion', function () {
 
   /* el iframe del mapa se carga cuando la sección se acerca, no antes */
   const marco = $('#osm');
+  if (!marco) return;          /* hay versiones del sitio que no llevan mapa */
   const d = 0.004;
   const bbox = [L.lon - d, L.lat - d / 2, L.lon + d, L.lat + d / 2].join('%2C');
   const cargaMapa = () => {
