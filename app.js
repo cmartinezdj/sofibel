@@ -162,17 +162,27 @@ const waLink = (texto) => `https://wa.me/${CONFIG.wa}?text=${encodeURIComponent(
 
   /* revelado al entrar al encuadre, una sola vez */
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let ojoCorrio = false;
   const ojo = new IntersectionObserver((filas) => {
+    ojoCorrio = true;
     filas.forEach((f) => {
       if (!f.isIntersecting) return;
       f.target.dataset.visto = 'si';
       ojo.unobserve(f.target);
     });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+  const revelaTodo = () => $$('.revela, .escalona').forEach((el) => { el.dataset.visto = 'si'; });
   const mira = () => $$('.revela:not([data-visto]), .escalona:not([data-visto])')
     .forEach((el) => (reduce ? (el.dataset.visto = 'si') : ojo.observe(el)));
   mira();
   window.sofibelMira = mira;      // el catálogo lo llama cuando pinta piezas
+
+  /* Red de seguridad: si el observador nunca reporta (pasa cuando el navegador
+     da una altura de ventana de 0, por ejemplo en una pestaña que nunca se
+     mostró), todo el contenido se quedaría en opacity 0 y la página se vería
+     vacía. Vale mucho más perder la animación que perder el contenido. */
+  setTimeout(() => { if (!ojoCorrio) revelaTodo(); }, 2500);
+  window.addEventListener('pageshow', () => { if (!ojoCorrio) revelaTodo(); });
 })();
 
 /* --------------------------------------------------- 5. catálogo y ficha */
@@ -480,12 +490,22 @@ function pintaReels(reels) {
   const marco = $('#osm');
   const d = 0.004;
   const bbox = [L.lon - d, L.lat - d / 2, L.lon + d, L.lat + d / 2].join('%2C');
-  const ojo = new IntersectionObserver(([e]) => {
-    if (!e.isIntersecting) return;
+  const cargaMapa = () => {
+    if (marco.dataset.cargado) return;
+    marco.dataset.cargado = 'si';
     marco.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${L.lat}%2C${L.lon}`;
+  };
+  let ojoCorrio = false;
+  const ojo = new IntersectionObserver(([e]) => {
+    ojoCorrio = true;
+    if (!e.isIntersecting) return;
+    cargaMapa();
     ojo.disconnect();
   }, { rootMargin: '300px' });
   ojo.observe(marco);
+  /* Si el observador no reporta, el mapa se cargaría nunca y quedaría un
+     rectángulo muerto. Mismo criterio que en el revelado. */
+  setTimeout(() => { if (!ojoCorrio) cargaMapa(); }, 4000);
 })();
 
 /* ----------------------------- 8. cita -------------------------------- */
