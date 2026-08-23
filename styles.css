@@ -42,6 +42,15 @@
   --rosa-brasa:   #8E3A41;   /* hover del botón */
   --sobre-rosa:   #FFFFFF;   /* texto sobre --rosa-honda, 6.01:1 */
 
+  /* Velos translúcidos escritos como rgba y no con color-mix(): color-mix
+     necesita Safari 16.2 y en un iPhone más viejo la declaración se cae
+     completa, dejando la barra de navegación transparente. */
+  --velo-papel:  rgba(253, 248, 248, .78);
+  --velo-fuerte: rgba(253, 248, 248, .86);
+  --velo-tinta:  rgba(36, 26, 28, .94);
+  --velo-rosa:   rgba(216, 144, 139, .20);
+  --halo-rosa:   rgba(162, 69, 76, .22);
+
   /* sombra tintada al tono del fondo, nunca negro puro */
   --sombra-1: 0 1px 2px rgb(75 34 38 / .06), 0 2px 8px rgb(75 34 38 / .05);
   --sombra-2: 0 2px 6px rgb(75 34 38 / .08), 0 18px 44px rgb(75 34 38 / .10);
@@ -76,6 +85,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    --velo-papel:  rgba(23, 17, 19, .80);
+    --velo-fuerte: rgba(23, 17, 19, .88);
+    --velo-tinta:  rgba(246, 238, 239, .94);
+    --velo-rosa:   rgba(176, 113, 110, .22);
+    --halo-rosa:   rgba(237, 175, 171, .26);
     --papel:       #171113;
     --tarjeta:     #211719;
     --tarjeta-2:   #2C2023;
@@ -95,6 +109,11 @@
   }
 }
 :root[data-theme="dark"] {
+  --velo-papel:  rgba(23, 17, 19, .80);
+  --velo-fuerte: rgba(23, 17, 19, .88);
+  --velo-tinta:  rgba(246, 238, 239, .94);
+  --velo-rosa:   rgba(176, 113, 110, .22);
+  --halo-rosa:   rgba(237, 175, 171, .26);
   --papel:       #171113;
   --tarjeta:     #211719;
   --tarjeta-2:   #2C2023;
@@ -262,7 +281,7 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
   position: sticky; top: 0; z-index: var(--z-nav);
   height: 4.25rem;                       /* 68px, bajo el techo de 80 */
   display: flex; align-items: center;
-  background: color-mix(in srgb, var(--papel) 76%, transparent);
+  background: var(--velo-papel);
   backdrop-filter: blur(18px) saturate(170%);
   -webkit-backdrop-filter: blur(18px) saturate(170%);
   border-bottom: 1px solid transparent;
@@ -341,6 +360,7 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 /* --------------------------------------------------------------- 7. portada */
 .portada {
   position: relative;
+  min-height: min(100vh, 54rem);   /* respaldo para Safari < 15.4 */
   min-height: min(100dvh, 54rem);
   display: grid; align-items: center;
   padding-top: clamp(2rem, 1rem + 4vw, 5rem);   /* techo de pt-24 respetado */
@@ -349,7 +369,7 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 }
 .portada::before {          /* velo rosa que sube desde el pie, decorativo */
   content: ""; position: absolute; inset: auto 0 0 0; height: 62%;
-  background: linear-gradient(to top, color-mix(in srgb, var(--rosa) 20%, transparent), transparent);
+  background: linear-gradient(to top, var(--velo-rosa), transparent);
   pointer-events: none;
 }
 .portada > .env {
@@ -492,7 +512,7 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
   display: grid; place-items: center;
   width: 2.5rem; height: 2.5rem;   /* área táctil cómoda con el pulgar */
   border: 0; border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--papel) 82%, transparent);
+  background: var(--velo-fuerte);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   color: var(--tinta); cursor: pointer;
   transition: transform 150ms var(--ease-out), background-color 180ms ease, color 180ms ease;
@@ -704,7 +724,7 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 .campo input::placeholder, .campo textarea::placeholder { color: var(--tinta-suave); opacity: 1; }
 .campo input:focus, .campo select:focus, .campo textarea:focus {
   outline: none; border-color: var(--rosa-honda);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rosa-honda) 22%, transparent);
+  box-shadow: 0 0 0 3px var(--halo-rosa);
 }
 .campo .error { font-size: 0.78rem; color: var(--rosa-honda); }
 .campo .error[hidden] { display: none; }
@@ -777,7 +797,8 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 .cajon[data-visible="si"] { transform: translateX(0); }
 @media (max-width: 37.5rem) {
   .cajon {
-    inset: auto 0 0 0; width: 100%; height: 92dvh;
+    inset: auto 0 0 0; width: 100%;
+    height: 92vh; height: 92dvh;
     border-top-left-radius: 14px; border-top-right-radius: 14px;
     transform: translateY(100%);
   }
@@ -824,7 +845,7 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
   position: fixed; inset: auto 0 0 0; z-index: var(--z-cinta);
   display: flex; align-items: center; justify-content: center; gap: 1rem;
   padding: 0.8rem var(--canal);
-  background: color-mix(in srgb, var(--tinta) 94%, transparent);
+  background: var(--velo-tinta);
   color: var(--papel);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   transform: translateY(110%);
@@ -852,6 +873,18 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
   grid-column: 1 / -1; padding-top: 1.6rem; border-top: 1px solid var(--filete);
   font-size: 0.78rem; color: var(--tinta-suave);
   display: grid; gap: 0.4rem;
+}
+
+/* ------------------------------- 22b. respaldo sin aspect-ratio (Safari < 15) */
+/* Sin aspect-ratio estos contenedores quedan de altura cero, y como las fotos
+   van en posición absoluta adentro, el catálogo completo se vuelve invisible.
+   El padding porcentual da la misma proporción y funciona desde siempre. */
+@supports not (aspect-ratio: 2 / 3) {
+  .pieza-foto { height: 0; padding-top: 150%; }          /* 2:3 */
+  .riel .pieza-foto { height: 0; padding-top: 133.34%; } /* 3:4 */
+  .reel .lienzo { height: 0; padding-top: 177.78%; }     /* 9:16 */
+  .cajon-galeria img { height: auto; }
+  .columnas-look img { height: auto; }
 }
 
 /* ------------------------------------------------------ 23. entrada al ver */

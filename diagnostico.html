@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnóstico · SOFIBÉL</title>
+<meta name="robots" content="noindex">
+<style>
+  /* A propósito: sin fuentes, sin imágenes, sin nada que pueda fallar.
+     Solo CSS que funciona desde 2015. */
+  body { margin:0; padding:16px; background:#fff; color:#111;
+         font:16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  p.sub { margin:0 0 18px; color:#666; font-size:14px; }
+  table { border-collapse:collapse; width:100%; font-size:14px; }
+  td { padding:7px 6px; border-bottom:1px solid #eee; vertical-align:top; }
+  td:first-child { color:#555; }
+  td:last-child { text-align:right; font-weight:600; white-space:nowrap; }
+  .si { color:#0a7c42; }
+  .no { color:#b3121c; }
+  .caja { background:#f6f6f6; padding:12px; border-radius:6px; font-size:12px;
+          word-break:break-all; margin:14px 0; line-height:1.45; }
+  h2 { font-size:15px; margin:22px 0 6px; }
+  #resumen { padding:12px; border-radius:6px; margin:14px 0; font-size:15px; font-weight:600; }
+  .bien { background:#e8f5ee; color:#0a5c32; }
+  .mal  { background:#fdeaea; color:#8e1118; }
+  textarea { width:100%; height:150px; font-family:ui-monospace,Menlo,monospace; font-size:11px;
+             border:1px solid #ccc; border-radius:6px; padding:8px; }
+  button { display:block; width:100%; padding:14px; margin-top:10px; font-size:16px;
+           background:#a2454c; color:#fff; border:0; border-radius:999px; }
+</style>
+</head>
+<body>
+
+<h1>Diagnóstico de SOFIBÉL</h1>
+<p class="sub">Esta página dice qué soporta tu teléfono. Manda la captura o el texto de abajo.</p>
+
+<div id="resumen">Revisando…</div>
+
+<h2>Tu navegador</h2>
+<div class="caja" id="ua">…</div>
+
+<h2>Lo que necesita el sitio</h2>
+<table id="tabla"></table>
+
+<h2>Errores de JavaScript</h2>
+<div class="caja" id="errores">Ninguno hasta ahora.</div>
+
+<h2>¿Bajan los archivos del sitio?</h2>
+<table id="red"></table>
+
+<h2>Copia esto y mándalo</h2>
+<textarea id="texto" readonly></textarea>
+<button type="button" id="copiar">Copiar todo</button>
+
+<script>
+/* Todo en ES5 a propósito: esta página tiene que correr incluso en el navegador
+   más viejo, porque si ella también falla no diagnostica nada. */
+(function () {
+  var errores = [];
+  window.onerror = function (m, f, l) {
+    errores.push(m + ' (' + (f || '?').split('/').pop() + ':' + l + ')');
+    pinta();
+  };
+
+  function css(prop, val) {
+    try { return window.CSS && CSS.supports && CSS.supports(prop, val); } catch (e) { return false; }
+  }
+
+  var pruebas = [
+    ['JavaScript corriendo', true],
+    ['IntersectionObserver', 'IntersectionObserver' in window],
+    ['fetch', typeof fetch === 'function'],
+    ['Promise', typeof Promise === 'function'],
+    ['async / await', (function () { try { new Function('return (async function(){})'); return true; } catch (e) { return false; } })()],
+    ['Arrow y template', (function () { try { new Function('var a=()=>`x`;return 1'); return true; } catch (e) { return false; } })()],
+    ['Encadenado opcional (?.)', (function () { try { new Function('var o={};return o?.a'); return true; } catch (e) { return false; } })()],
+    ['matchMedia addEventListener', (function () {
+      try { var m = window.matchMedia('(min-width:1px)'); return typeof m.addEventListener === 'function'; } catch (e) { return false; }
+    })()],
+    ['localStorage', (function () { try { localStorage.setItem('_t', '1'); localStorage.removeItem('_t'); return true; } catch (e) { return false; } })()],
+    ['TextEncoder', typeof TextEncoder === 'function'],
+    ['CSS aspect-ratio', css('aspect-ratio', '2 / 3')],
+    ['CSS color-mix', css('background', 'color-mix(in srgb, red 50%, blue)')],
+    ['CSS 100dvh', css('height', '100dvh')],
+    ['CSS inset', css('inset', '0')],
+    ['CSS gap en flex', css('gap', '1rem')],
+    ['CSS backdrop-filter', css('backdrop-filter', 'blur(4px)') || css('-webkit-backdrop-filter', 'blur(4px)')],
+    ['CSS clamp()', css('width', 'clamp(1rem, 5vw, 3rem)')],
+    ['CSS grid', css('display', 'grid')],
+    ['Imágenes WebP', null]
+  ];
+
+  var criticas = ['IntersectionObserver', 'fetch', 'Promise', 'async / await',
+    'Arrow y template', 'CSS aspect-ratio', 'CSS grid'];
+
+  function pinta() {
+    var t = document.getElementById('tabla'), h = '';
+    for (var i = 0; i < pruebas.length; i++) {
+      var n = pruebas[i][0], v = pruebas[i][1];
+      var txt = v === null ? 'probando…' : (v ? 'sí' : 'NO');
+      var cl = v === null ? '' : (v ? 'si' : 'no');
+      h += '<tr><td>' + n + '</td><td class="' + cl + '">' + txt + '</td></tr>';
+    }
+    t.innerHTML = h;
+
+    var faltan = [];
+    for (var j = 0; j < pruebas.length; j++) {
+      if (pruebas[j][1] === false && criticas.indexOf(pruebas[j][0]) >= 0) faltan.push(pruebas[j][0]);
+    }
+    var r = document.getElementById('resumen');
+    if (errores.length) {
+      r.className = 'mal';
+      r.innerHTML = 'Hay ' + errores.length + ' error(es) de JavaScript. Eso explica que no cargue.';
+    } else if (faltan.length) {
+      r.className = 'mal';
+      r.innerHTML = 'Tu navegador no soporta: ' + faltan.join(', ') + '. Eso explica que no cargue.';
+    } else {
+      r.className = 'bien';
+      r.innerHTML = 'Tu navegador soporta todo lo que el sitio necesita. El problema es otro: mira los archivos de abajo.';
+    }
+
+    document.getElementById('errores').innerHTML = errores.length ? errores.join('<br>') : 'Ninguno.';
+
+    var out = 'DIAGNOSTICO SOFIBEL\n' + new Date().toString() + '\n\n' +
+      'UA: ' + navigator.userAgent + '\n' +
+      'Pantalla: ' + window.innerWidth + 'x' + window.innerHeight +
+      ' dpr ' + (window.devicePixelRatio || 1) + '\n' +
+      'Idioma: ' + navigator.language + '\n' +
+      'Conexion: ' + (navigator.connection ? (navigator.connection.effectiveType + ' ' + navigator.connection.downlink + 'Mbps') : 'desconocida') + '\n\n';
+    for (var k = 0; k < pruebas.length; k++) {
+      out += (pruebas[k][1] === null ? '?' : (pruebas[k][1] ? 'OK  ' : 'NO  ')) + pruebas[k][0] + '\n';
+    }
+    out += '\nERRORES:\n' + (errores.length ? errores.join('\n') : 'ninguno') + '\n';
+    out += '\nARCHIVOS:\n' + red.join('\n');
+    document.getElementById('texto').value = out;
+  }
+
+  document.getElementById('ua').innerHTML =
+    navigator.userAgent + '<br><br>Pantalla ' + window.innerWidth + ' x ' + window.innerHeight +
+    ' · densidad ' + (window.devicePixelRatio || 1) +
+    (navigator.connection ? '<br>Conexión: ' + navigator.connection.effectiveType : '');
+
+  /* WebP */
+  var wp = new Image();
+  wp.onload = function () { pruebas[pruebas.length - 1][1] = wp.width === 1; pinta(); };
+  wp.onerror = function () { pruebas[pruebas.length - 1][1] = false; pinta(); };
+  wp.src = 'data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';
+
+  /* ¿bajan de verdad los archivos del sitio? */
+  var red = [];
+  var archivos = ['index.html', 'styles.css', 'app.js', 'data/vestidos.json',
+    'assets/fonts/Jost-var-latin.woff2', 'images/vestidos/azul-rey-cruzado-1-420.webp'];
+  var tr = document.getElementById('red');
+  function prueba(i) {
+    if (i >= archivos.length) { pinta(); return; }
+    var f = archivos[i], t0 = new Date().getTime();
+    var x = new XMLHttpRequest();
+    x.open('GET', f + '?t=' + t0, true);
+    x.onload = function () {
+      var ms = new Date().getTime() - t0;
+      var kb = Math.round((x.responseText ? x.responseText.length : 0) / 1024);
+      red.push(f + ' -> ' + x.status + ' ' + kb + 'KB ' + ms + 'ms');
+      tr.innerHTML += '<tr><td>' + f + '</td><td class="' + (x.status === 200 ? 'si' : 'no') + '">' +
+        x.status + ' · ' + ms + ' ms</td></tr>';
+      prueba(i + 1);
+    };
+    x.onerror = function () {
+      red.push(f + ' -> FALLO de red');
+      tr.innerHTML += '<tr><td>' + f + '</td><td class="no">falló</td></tr>';
+      prueba(i + 1);
+    };
+    x.timeout = 15000;
+    x.ontimeout = function () {
+      red.push(f + ' -> se tardo mas de 15s');
+      tr.innerHTML += '<tr><td>' + f + '</td><td class="no">&gt; 15 s</td></tr>';
+      prueba(i + 1);
+    };
+    x.send();
+  }
+  prueba(0);
+
+  document.getElementById('copiar').onclick = function () {
+    var t = document.getElementById('texto');
+    t.select();
+    try { document.execCommand('copy'); this.innerHTML = 'Copiado'; }
+    catch (e) { this.innerHTML = 'Selecciona el texto y copia a mano'; }
+  };
+
+  pinta();
+})();
+</script>
+</body>
+</html>

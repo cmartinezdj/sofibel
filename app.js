@@ -104,8 +104,35 @@ const telBonito = (v) => { const d = normalizaTel(v); return d.length === 10 ? `
 
 const waLink = (texto) => `https://wa.me/${CONFIG.wa}?text=${encodeURIComponent(texto)}`;
 
+/* -------------------------------------------------- 0. aislar los bloques */
+/* Cada sección va en su propio try. Si una falla, las demás siguen: antes un
+   error en el primer bloque abortaba el archivo completo y la página quedaba
+   sin catálogo, sin formulario y con todo el contenido invisible. */
+const fallos = [];
+function bloque(nombre, fn) {
+  try { fn(); } catch (e) {
+    fallos.push(nombre + ': ' + (e && e.message ? e.message : e));
+    if (window.console) console.error('SOFIBEL, fallo el bloque ' + nombre, e);
+    rescate();
+  }
+}
+/* Pase lo que pase, el contenido se ve y hay cómo escribirles. */
+function rescate() {
+  try {
+    document.documentElement.classList.add('revelado-directo');
+    const r = document.querySelector('#rejilla-vestidos');
+    if (r && !r.children.length) {
+      r.innerHTML = '<p style="grid-column:1/-1;color:var(--tinta-suave)">' +
+        'No pudimos cargar el catálogo en este navegador. Escríbeles directo por ' +
+        '<a href="' + CONFIG.waCorto + '" target="_blank" rel="noopener">WhatsApp</a> ' +
+        'y te mandan fotos de lo que tienen.</p>';
+    }
+  } catch (e) {}
+}
+window.addEventListener('error', rescate);
+
 /* -------------------------------------------------------------- 3. tema */
-(function tema() {
+bloque('tema', function () {
   const raiz = document.documentElement;
   const btn = $('#cambiar-tema');
   const pinta = () => {
@@ -124,12 +151,16 @@ const waLink = (texto) => `https://wa.me/${CONFIG.wa}?text=${encodeURIComponent(
     try { localStorage.setItem('sofibel-tema', raiz.dataset.theme); } catch (e) {}
     pinta();
   });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', pinta);
+  const mq = matchMedia('(prefers-color-scheme: dark)');
+  /* Safari de iOS 13 y anteriores no tienen addEventListener en MediaQueryList.
+     Sin esta comprobación tronaba aquí, en el primer bloque del archivo. */
+  if (typeof mq.addEventListener === 'function') mq.addEventListener('change', pinta);
+  else if (typeof mq.addListener === 'function') mq.addListener(pinta);
   pinta();
-})();
+});
 
 /* ------------------------------------------------------- 4. navegación */
-(function nav() {
+bloque('nav', function () {
   /* Borde del encabezado solo cuando ya hay contenido debajo. Con un centinela
      y IntersectionObserver, no con un listener de scroll.                    */
   const centinela = document.createElement('div');
@@ -191,7 +222,7 @@ const waLink = (texto) => `https://wa.me/${CONFIG.wa}?text=${encodeURIComponent(
   const red = () => { if (!$('[data-visto="si"]')) revelaTodo(); };
   setTimeout(red, 2500);
   window.addEventListener('pageshow', () => setTimeout(red, 400));
-})();
+});
 
 /* --------------------------------------------------- 5. catálogo y ficha */
 const Tienda = {
@@ -518,7 +549,7 @@ function pintaReels(reels) {
 }
 
 /* -------------------------- 7. ubicación ------------------------------- */
-(function ubicacion() {
+bloque('ubicacion', function () {
   const L = CONFIG.local;
   const dir = `${L.calle}, ${L.colonia}, ${L.estado}`;
   $('#mapa-google').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(L.nombre + ' ' + dir)}`;
@@ -556,7 +587,7 @@ function pintaReels(reels) {
      así que no compite con el LCP, y así nunca queda un rectángulo muerto. */
   const tras = () => setTimeout(cargaMapa, 1500);
   document.readyState === 'complete' ? tras() : window.addEventListener('load', tras);
-})();
+});
 
 /* ----------------------------- 8. cita -------------------------------- */
 const Cita = { paso: 1, ultimoWa: '' };
@@ -764,7 +795,7 @@ function respaldoCorreo(mensaje) {
   } catch (e) {}
 }
 
-(function cita() {
+bloque('cita', function () {
   const form = $('#form-cita');
   const hoy = hoyISO();
   $('#fecha-evento').min = hoy;
@@ -824,7 +855,7 @@ function respaldoCorreo(mensaje) {
 
   llenaHoras();
   pintaResumen();
-})();
+});
 
 /* ------------------------------ 9. eventos ----------------------------- */
 document.addEventListener('click', (e) => {
