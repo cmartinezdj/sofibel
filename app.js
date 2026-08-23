@@ -14,6 +14,11 @@
    ========================================================================== */
 'use strict';
 
+/* Primera linea util del archivo: le dice al script de arranque que app.js si
+   llego y si parseo. Si esto no pasa en 1.8 s, el efecto de entrada se apaga y
+   el contenido se ve completo aunque el resto de este archivo falle. */
+window.__sofibelVivo = true;
+
 /* ------------------------------------------------------------- 1. CONFIG */
 const CONFIG = {
   /* WhatsApp del negocio: 52 + 10 dígitos, SIN el 1 viejo y sin signos.
@@ -508,13 +513,14 @@ function pintaCatalogo() {
 /* ---------------------------- 6. reels --------------------------------- */
 function pintaReels(reels) {
   $('#rejilla-reels').innerHTML = reels.map((r) => `
-    <figure class="reel" data-code="${esc(r.code)}">
+    <figure class="reel" data-code="${esc(r.code)}" data-mp4="${esc(r.mp4)}">
       <div class="lienzo">
         <img data-src="${esc(r.poster)}" width="720" height="1280" decoding="async" alt="${esc(r.alt)}">
-        <!-- sin poster= en el <video>: esa foto la pone el <img> de arriba, y el
-             atributo poster se descarga siempre, aunque el video no se toque. -->
+        <!-- El <video> nace SIN <source> y sin poster=, a proposito. Safari no
+             siempre respeta preload="none" y se ponia a jalar los seis videos
+             (15 MB) al abrir la pagina. El source se agrega al tocar play. -->
         <video muted loop playsinline preload="none"
-               aria-label="${esc(r.alt)}"><source src="${esc(r.mp4)}" type="video/mp4"></video>
+               aria-label="${esc(r.alt)}"></video>
         <button class="reel-play" type="button" aria-label="Reproducir: ${esc(r.titulo)}">
           <span>${icono('play')}</span></button>
       </div>
@@ -533,6 +539,13 @@ function pintaReels(reels) {
       $('video', otro).pause();
     });
     if (fig.dataset.jugando === 'si') { v.pause(); fig.dataset.jugando = 'no'; return; }
+    /* el archivo se pide aqui, la primera vez que alguien lo toca */
+    if (!v.querySelector('source') && fig.dataset.mp4) {
+      const s = document.createElement('source');
+      s.src = fig.dataset.mp4; s.type = 'video/mp4';
+      v.appendChild(s);
+      v.load();
+    }
     fig.dataset.jugando = 'si';
     v.play().catch(() => { fig.dataset.jugando = 'no'; });
   });

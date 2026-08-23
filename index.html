@@ -38,8 +38,19 @@
 <link rel="preload" href="assets/fonts/CormorantGaramond-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Jost-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
-<script>document.documentElement.classList.remove('sin-js');
-  try { var t = localStorage.getItem('sofibel-tema'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+<script>
+  (function () {
+    var d = document.documentElement;
+    d.className = d.className.replace('sin-js', '');
+    try { var t = localStorage.getItem('sofibel-tema'); if (t) d.setAttribute('data-theme', t); } catch (e) {}
+    /* El efecto de entrada se habilita aqui, antes de pintar, para que no haya
+       parpadeo. Y se apaga solo si app.js no responde en 1.8 s: sin esta salida,
+       cualquier falla de JavaScript dejaba la pagina completamente en blanco. */
+    d.className += ' anima';
+    window.setTimeout(function () {
+      if (!window.__sofibelVivo) d.className = d.className.replace(' anima', '');
+    }, 1800);
+  })();
 </script>
 </head>
 

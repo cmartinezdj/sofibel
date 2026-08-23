@@ -942,21 +942,25 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 /* ------------------------------------------------------ 23. entrada al ver */
 /* Motivo: jerarquía. La sección se presenta cuando entra al encuadre, para que
    la vista aterrice en un bloque a la vez y no en un muro de todo. Una sola vez. */
-.revela { opacity: 0; transform: translateY(14px); }
-.revela[data-visto="si"] {
+/* El contenido es visible por default. El efecto solo existe si el documento
+   trae la clase .anima, que pone el script de arranque y se quita sola si
+   app.js no responde. Asi, sin JavaScript o con JavaScript roto, se ve todo. */
+.anima .revela:not([data-visto]) { opacity: 0; transform: translateY(14px); }
+.anima .revela[data-visto="si"] {
   opacity: 1; transform: none;
   transition: opacity 520ms var(--ease-out), transform 520ms var(--ease-out);
 }
-.escalona > * { opacity: 0; transform: translateY(12px); }
-.escalona[data-visto="si"] > * {
+.anima .escalona:not([data-visto]) > * { opacity: 0; transform: translateY(12px); }
+.anima .escalona[data-visto="si"] > * {
   opacity: 1; transform: none;
   transition: opacity 460ms var(--ease-out), transform 460ms var(--ease-out);
   transition-delay: calc(var(--i, 0) * 55ms);
 }
-.sin-js .revela, .sin-js .escalona > * { opacity: 1; transform: none; }
 /* Salida de emergencia: se ve el contenido sin depender del reloj de animación. */
 .revelado-directo .revela,
-.revelado-directo .escalona > * {
+.revelado-directo .escalona > *,
+.revelado-directo .revela:not([data-visto]),
+.revelado-directo .escalona:not([data-visto]) > * {
   opacity: 1 !important; transform: none !important; transition: none !important;
 }
 
@@ -966,7 +970,9 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .revela, .escalona > * { opacity: 1 !important; transform: none !important; }
+  .revela, .escalona > *, .revela:not([data-visto]), .escalona:not([data-visto]) > * {
+    opacity: 1 !important; transform: none !important;
+  }
   .cajon, .cajon[data-visible="si"] { transform: none; }
   .pieza-boton:hover .pieza-foto img { transform: none; }
 }
