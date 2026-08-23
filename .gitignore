@@ -1,0 +1,11 @@
+# Los reels originales pesan 67 MB y no se publican: en el sitio van los
+# recomprimidos de videos/web/. Se regeneran con tools/build_videos.py
+videos/*.mp4
+
+# Fotos crudas de Instagram. Del sitio salen los webp de images/vestidos/,
+# que se regeneran con tools/build_catalogo.py
+images/posts/
+images/ig/
+
+.DS_Store
+.claude/

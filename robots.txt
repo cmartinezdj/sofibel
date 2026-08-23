@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cmartinezdj.github.io/sofibel/sitemap.xml

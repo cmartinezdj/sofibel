@@ -1,0 +1,65 @@
+{
+ "nota": "Reels públicos de @sofibelmx, recomprimidos sin audio para reproducirse en bucle en el sitio.",
+ "reels": [
+  {
+   "code": "DYlGdEAiy40",
+   "titulo": "Tu graduación",
+   "alt": "Reel de graduación: varias clientas posando con vestidos largos de SOFIBÉL.",
+   "mp4": "videos/web/DYlGdEAiy40.mp4",
+   "poster": "videos/web/DYlGdEAiy40.webp",
+   "segundos": 32,
+   "instagram": "https://www.instagram.com/reel/DYlGdEAiy40/",
+   "kb": 4573
+  },
+  {
+   "code": "DYVy2gLyi1x",
+   "titulo": "El vestido que amarás",
+   "alt": "Reel de un vestido largo champagne con la espalda descubierta, girando.",
+   "mp4": "videos/web/DYVy2gLyi1x.mp4",
+   "poster": "videos/web/DYVy2gLyi1x.webp",
+   "segundos": 15,
+   "instagram": "https://www.instagram.com/reel/DYVy2gLyi1x/",
+   "kb": 1737
+  },
+  {
+   "code": "DYDnAcIBK_D",
+   "titulo": "Nuevo en el showroom",
+   "alt": "Reel de un vestido rojo de hombros caídos recién llegado al showroom.",
+   "mp4": "videos/web/DYDnAcIBK_D.mp4",
+   "poster": "videos/web/DYDnAcIBK_D.webp",
+   "segundos": 9,
+   "instagram": "https://www.instagram.com/reel/DYDnAcIBK_D/",
+   "kb": 940
+  },
+  {
+   "code": "DcKWiMKsfFx",
+   "titulo": "El color de la temporada",
+   "alt": "Reel de un vestido menta con corpiño de lentejuela a la luz del día.",
+   "mp4": "videos/web/DcKWiMKsfFx.mp4",
+   "poster": "videos/web/DcKWiMKsfFx.webp",
+   "segundos": 16,
+   "instagram": "https://www.instagram.com/reel/DcKWiMKsfFx/",
+   "kb": 2367
+  },
+  {
+   "code": "Day00i0BYo8",
+   "titulo": "Vestido y bolsa",
+   "alt": "Reel de un vestido verde esmeralda de tul con clutch a juego.",
+   "mp4": "videos/web/Day00i0BYo8.mp4",
+   "poster": "videos/web/Day00i0BYo8.webp",
+   "segundos": 14,
+   "instagram": "https://www.instagram.com/reel/Day00i0BYo8/",
+   "kb": 2046
+  },
+  {
+   "code": "DaeF2J6P32r",
+   "titulo": "Naranja de un hombro",
+   "alt": "Reel de un vestido naranja de un hombro con corte sirena.",
+   "mp4": "videos/web/DaeF2J6P32r.mp4",
+   "poster": "videos/web/DaeF2J6P32r.webp",
+   "segundos": 10,
+   "instagram": "https://www.instagram.com/reel/DaeF2J6P32r/",
+   "kb": 3656
+  }
+ ]
+}

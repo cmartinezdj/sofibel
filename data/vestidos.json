@@ -1,0 +1,1626 @@
+{
+ "generado": "tools/build_catalogo.py",
+ "nota": "Fotos públicas de @sofibelmx recortadas a 2:3. precioRenta, precioVenta, valorVestido y tallas están en null porque no hay dato público: llénalos y el sitio los muestra solo. Vuelve a correr el script si cambias las fotos.",
+ "ocasiones": [
+  {
+   "id": "noche",
+   "nombre": "Noche y gala"
+  },
+  {
+   "id": "graduacion",
+   "nombre": "Graduación"
+  },
+  {
+   "id": "xv",
+   "nombre": "XV años"
+  },
+  {
+   "id": "boda",
+   "nombre": "Boda de invitada"
+  },
+  {
+   "id": "dia",
+   "nombre": "Evento de día"
+  }
+ ],
+ "vestidos": [
+  {
+   "id": "azul-rey-cruzado",
+   "nombre": "Azul rey, escote cruzado",
+   "color": "Azul rey",
+   "colorHex": "#1E3FA8",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Escote cruzado, tirantes finos y abertura lateral.",
+   "ocasion": [
+    "noche",
+    "graduacion",
+    "dia"
+   ],
+   "caption": "Vestido ideal para eventos de día o de noche.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/azul-rey-cruzado-1-420.webp",
+       "kb": 15
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/azul-rey-cruzado-1-720.webp",
+       "kb": 36
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/azul-rey-cruzado-1-1080.webp",
+       "kb": 69
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DXcl1MqlMDS/"
+    },
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/azul-rey-cruzado-2-420.webp",
+       "kb": 11
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/azul-rey-cruzado-2-720.webp",
+       "kb": 24
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/azul-rey-cruzado-2-1080.webp",
+       "kb": 44
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DXcl1MqlMDS/"
+    },
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/azul-rey-cruzado-3-420.webp",
+       "kb": 9
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/azul-rey-cruzado-3-720.webp",
+       "kb": 18
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/azul-rey-cruzado-3-1080.webp",
+       "kb": 31
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DXcl1MqlMDS/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "verde-esmeralda-tul",
+   "nombre": "Verde esmeralda en tul",
+   "color": "Verde esmeralda",
+   "colorHex": "#0B6B4F",
+   "largo": "Largo",
+   "tela": "Tul",
+   "detalle": "Escote en V profundo, falda de tul con doble abertura.",
+   "ocasion": [
+    "noche",
+    "graduacion"
+   ],
+   "caption": "El vestido y la bolsa son de Sofibél.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/verde-esmeralda-tul-1-420.webp",
+       "kb": 30
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/verde-esmeralda-tul-1-720.webp",
+       "kb": 73
+      }
+     ],
+     "origen": "https://www.instagram.com/p/Day00i0BYo8/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "menta-lentejuela",
+   "nombre": "Menta con corpiño de lentejuela",
+   "color": "Menta",
+   "colorHex": "#8FE3C8",
+   "largo": "Largo",
+   "tela": "Lentejuela",
+   "detalle": "Corpiño de lentejuela y falda de gasa plisada.",
+   "ocasion": [
+    "xv",
+    "graduacion",
+    "dia"
+   ],
+   "caption": "El vestido y color ideal para esta temporada.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/menta-lentejuela-1-420.webp",
+       "kb": 29
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/menta-lentejuela-1-720.webp",
+       "kb": 67
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DcKWiMKsfFx/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "terracota-halter",
+   "nombre": "Terracota satinado, halter",
+   "color": "Terracota",
+   "colorHex": "#B65A2B",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Halter con espalda descubierta y caída fluida.",
+   "ocasion": [
+    "noche",
+    "boda"
+   ],
+   "caption": "Ese brillo satinado bajo las luces. Vestido terracota disponible en Sofibél.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/terracota-halter-1-420.webp",
+       "kb": 22
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DYikSvXvkyq/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "terracota-drapeado",
+   "nombre": "Terracota de cuello drapeado",
+   "color": "Terracota",
+   "colorHex": "#C0632F",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Cuello drapeado, tirantes de lazo y abertura al frente.",
+   "ocasion": [
+    "noche",
+    "boda"
+   ],
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/terracota-drapeado-1-420.webp",
+       "kb": 23
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/terracota-drapeado-1-720.webp",
+       "kb": 43
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/terracota-drapeado-1-1080.webp",
+       "kb": 69
+      }
+     ],
+     "origen": "https://www.instagram.com/p/Dbre6V6tpPk/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "naranja-un-hombro",
+   "nombre": "Naranja de un hombro",
+   "color": "Naranja",
+   "colorHex": "#F0602B",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Un hombro, cintura fruncida y corte sirena.",
+   "ocasion": [
+    "noche",
+    "boda"
+   ],
+   "caption": "El vestido perfecto te está esperando.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/naranja-un-hombro-1-420.webp",
+       "kb": 71
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/naranja-un-hombro-1-720.webp",
+       "kb": 203
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DaeF2J6P32r/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "fucsia-halter",
+   "nombre": "Fucsia satinado, halter",
+   "color": "Fucsia",
+   "colorHex": "#C4166B",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Halter cruzado con abertura lateral alta.",
+   "ocasion": [
+    "noche"
+   ],
+   "caption": "Nos encanta ser parte de cada uno de sus eventos.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/fucsia-halter-1-420.webp",
+       "kb": 20
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/fucsia-halter-1-720.webp",
+       "kb": 38
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/fucsia-halter-1-1080.webp",
+       "kb": 62
+      }
+     ],
+     "origen": "https://www.instagram.com/p/Dbo2qKnRTpD/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "morado-hombros-caidos",
+   "nombre": "Morado de hombros caídos",
+   "color": "Morado",
+   "colorHex": "#5B2A78",
+   "largo": "Largo",
+   "tela": "Crepé",
+   "detalle": "Hombros caídos, drapeado al talle y pedrería lateral.",
+   "ocasion": [
+    "boda",
+    "noche"
+   ],
+   "caption": "Amamos verlas brillar en sus eventos.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/morado-hombros-caidos-1-420.webp",
+       "kb": 43
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/morado-hombros-caidos-1-720.webp",
+       "kb": 99
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/morado-hombros-caidos-1-1080.webp",
+       "kb": 163
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DawP7I0OnXe/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "azul-un-hombro",
+   "nombre": "Azul rey de un hombro",
+   "color": "Azul rey",
+   "colorHex": "#26489E",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Un hombro con drapeado al talle y abertura lateral.",
+   "ocasion": [
+    "noche",
+    "graduacion"
+   ],
+   "caption": "Blue never looked this good.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/azul-un-hombro-1-420.webp",
+       "kb": 31
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/azul-un-hombro-1-720.webp",
+       "kb": 75
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DaJqe7zPO5C/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "vino-midi-manga",
+   "nombre": "Vino midi de manga suelta",
+   "color": "Vino",
+   "colorHex": "#7E1F45",
+   "largo": "Midi",
+   "tela": "Crepé",
+   "detalle": "Manga suelta, talle a la cintura y falda amplia.",
+   "ocasion": [
+    "dia",
+    "boda"
+   ],
+   "caption": "El vestido ideal para cualquier ocasión.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/vino-midi-manga-1-420.webp",
+       "kb": 27
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/vino-midi-manga-1-720.webp",
+       "kb": 50
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DamDbQjnJcz/"
+    },
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/vino-midi-manga-2-420.webp",
+       "kb": 20
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/vino-midi-manga-2-720.webp",
+       "kb": 39
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DamDbQjnJcz/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "verde-olivo-halter",
+   "nombre": "Verde olivo, halter",
+   "color": "Verde olivo",
+   "colorHex": "#6B6B23",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Halter de escote profundo y espalda descubierta.",
+   "ocasion": [
+    "noche",
+    "boda"
+   ],
+   "caption": "Mom & daughter wearing SOFIBÉL.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/verde-olivo-halter-1-420.webp",
+       "kb": 14
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/verde-olivo-halter-1-720.webp",
+       "kb": 31
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/verde-olivo-halter-1-1080.webp",
+       "kb": 61
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DY3NX/"
+    },
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/verde-olivo-halter-2-420.webp",
+       "kb": 22
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/verde-olivo-halter-2-720.webp",
+       "kb": 45
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/verde-olivo-halter-2-1080.webp",
+       "kb": 75
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DY3NX/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "negro-plisado-halter",
+   "nombre": "Negro plisado, halter",
+   "color": "Negro",
+   "colorHex": "#141414",
+   "largo": "Largo",
+   "tela": "Plisado",
+   "detalle": "Halter plisado con escote en V y abertura frontal.",
+   "ocasion": [
+    "noche"
+   ],
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/negro-plisado-halter-1-420.webp",
+       "kb": 20
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/negro-plisado-halter-1-720.webp",
+       "kb": 40
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/negro-plisado-halter-1-1080.webp",
+       "kb": 66
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DY3NX/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "bronce-lentejuela-midi",
+   "nombre": "Bronce de lentejuela, midi",
+   "color": "Bronce",
+   "colorHex": "#7A4B2A",
+   "largo": "Midi",
+   "tela": "Lentejuela",
+   "detalle": "Midi de lentejuela con manga larga y lazo al talle.",
+   "ocasion": [
+    "boda",
+    "noche"
+   ],
+   "caption": "Amamos verlas brillar.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/bronce-lentejuela-midi-1-420.webp",
+       "kb": 57
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/bronce-lentejuela-midi-1-720.webp",
+       "kb": 141
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/bronce-lentejuela-midi-1-1080.webp",
+       "kb": 259
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DYdkiA0nGME/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "champagne-espalda",
+   "nombre": "Champagne de espalda descubierta",
+   "color": "Champagne",
+   "colorHex": "#C8A98A",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Espalda descubierta con tirantes cruzados y cola suave.",
+   "ocasion": [
+    "noche",
+    "boda"
+   ],
+   "caption": "EL vestido que amarás ya está en SOFIBÉL.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/champagne-espalda-1-420.webp",
+       "kb": 23
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/champagne-espalda-1-720.webp",
+       "kb": 47
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DYVy2gLyi1x/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "azul-marino-encaje",
+   "nombre": "Azul marino con encaje",
+   "color": "Azul marino",
+   "colorHex": "#1B2A4A",
+   "largo": "Largo",
+   "tela": "Encaje",
+   "detalle": "Manga larga de encaje, escote en V y falda cruzada.",
+   "ocasion": [
+    "noche",
+    "boda"
+   ],
+   "caption": "Mangas largas más brillos, la combinación más classy del momento.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/azul-marino-encaje-1-420.webp",
+       "kb": 28
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/azul-marino-encaje-1-720.webp",
+       "kb": 54
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DYQihG1J62V/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "rojo-olanes-sirena",
+   "nombre": "Rojo con olanes, corte sirena",
+   "color": "Rojo",
+   "colorHex": "#B3121C",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Corte sirena con cascada de olanes y escote corazón.",
+   "ocasion": [
+    "noche",
+    "xv"
+   ],
+   "caption": "Amamos verlas brillar.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/rojo-olanes-sirena-1-420.webp",
+       "kb": 53
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/rojo-olanes-sirena-1-720.webp",
+       "kb": 125
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/rojo-olanes-sirena-1-1080.webp",
+       "kb": 212
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DYN_uxMN0HE/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "rojo-hombros-caidos",
+   "nombre": "Rojo de hombros caídos",
+   "color": "Rojo",
+   "colorHex": "#C21D24",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Hombros caídos y espalda abierta con lazo.",
+   "ocasion": [
+    "noche",
+    "graduacion"
+   ],
+   "caption": "NEW ARRIVAL. Ven a rentarlo ya.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/rojo-hombros-caidos-1-420.webp",
+       "kb": 7
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/rojo-hombros-caidos-1-720.webp",
+       "kb": 16
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DYDnAcIBK_D/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "verde-esmeralda-maxi",
+   "nombre": "Verde esmeralda, maxi de gasa",
+   "color": "Verde esmeralda",
+   "colorHex": "#0E7A55",
+   "largo": "Largo",
+   "tela": "Gasa",
+   "detalle": "Escote en V, tirantes anchos y falda amplia de gasa.",
+   "ocasion": [
+    "dia",
+    "boda"
+   ],
+   "caption": "Guapísima.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/verde-esmeralda-maxi-1-420.webp",
+       "kb": 88
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/verde-esmeralda-maxi-1-720.webp",
+       "kb": 237
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/verde-esmeralda-maxi-1-1080.webp",
+       "kb": 446
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DX/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "rojo-halter-abertura",
+   "nombre": "Rojo halter con abertura",
+   "color": "Rojo",
+   "colorHex": "#D81E1E",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Halter con escote cruzado y abertura lateral.",
+   "ocasion": [
+    "noche",
+    "xv"
+   ],
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/rojo-halter-abertura-1-420.webp",
+       "kb": 47
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DX7mVDPBpnv/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "rojo-halter-cruzado",
+   "nombre": "Rojo halter cruzado",
+   "color": "Rojo",
+   "colorHex": "#E02020",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Halter cruzado al frente con falda recta.",
+   "ocasion": [
+    "noche"
+   ],
+   "caption": "Ya llegó el vestido de la temporada.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/rojo-halter-cruzado-1-420.webp",
+       "kb": 36
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DXngEKzj/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "fucsia-manga-larga",
+   "nombre": "Fucsia de manga larga",
+   "color": "Fucsia",
+   "colorHex": "#BE1E6E",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Manga larga, escote corazón y corte sirena.",
+   "ocasion": [
+    "noche",
+    "xv"
+   ],
+   "caption": "EL vestido soñado. Ven a Sofibél y réntalo ya.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/fucsia-manga-larga-1-420.webp",
+       "kb": 28
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DXvKHCQP5PU/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "negro-drapeado",
+   "nombre": "Negro drapeado con abertura",
+   "color": "Negro",
+   "colorHex": "#17171A",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Drapeado al cuerpo, un hombro y abertura lateral.",
+   "ocasion": [
+    "noche"
+   ],
+   "caption": "Amamos verlas brillar.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/negro-drapeado-1-420.webp",
+       "kb": 69
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/negro-drapeado-1-720.webp",
+       "kb": 199
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/negro-drapeado-1-1080.webp",
+       "kb": 438
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DXsh/"
+    },
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/negro-drapeado-2-420.webp",
+       "kb": 24
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/negro-drapeado-2-720.webp",
+       "kb": 66
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/negro-drapeado-2-1080.webp",
+       "kb": 150
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DXsh/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "vino-manga-lazo",
+   "nombre": "Vino de manga larga con lazo",
+   "color": "Vino",
+   "colorHex": "#7C1226",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Manga larga, cuello alto y lazo drapeado al talle.",
+   "ocasion": [
+    "noche",
+    "boda"
+   ],
+   "caption": "Nos encanta ser parte de sus eventos.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/vino-manga-lazo-1-420.webp",
+       "kb": 42
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/vino-manga-lazo-1-720.webp",
+       "kb": 96
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DZGuiY4lNdL/"
+    },
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/vino-manga-lazo-2-420.webp",
+       "kb": 37
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/vino-manga-lazo-2-720.webp",
+       "kb": 86
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DZGuiY4lNdL/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "magenta-abertura",
+   "nombre": "Magenta satinado con abertura",
+   "color": "Magenta",
+   "colorHex": "#B5185F",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Escote asimétrico y abertura lateral alta.",
+   "ocasion": [
+    "noche"
+   ],
+   "caption": "El vestido soñado.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/magenta-abertura-1-420.webp",
+       "kb": 27
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/magenta-abertura-1-720.webp",
+       "kb": 63
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DZEE_E0SOWt/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "rosa-mexicano-tul",
+   "nombre": "Rosa mexicano, tul de capas",
+   "color": "Rosa mexicano",
+   "colorHex": "#DE2170",
+   "largo": "Largo",
+   "tela": "Tul",
+   "detalle": "Strapless con falda de capas de tul.",
+   "ocasion": [
+    "xv",
+    "graduacion",
+    "boda"
+   ],
+   "caption": "Friends wearing SOFIBÉL.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/rosa-mexicano-tul-1-420.webp",
+       "kb": 51
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/rosa-mexicano-tul-1-720.webp",
+       "kb": 137
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/rosa-mexicano-tul-1-1080.webp",
+       "kb": 278
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DZlrDj_jHdM/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "azul-marino-olanes",
+   "nombre": "Azul marino de un hombro con olanes",
+   "color": "Azul marino",
+   "colorHex": "#1F2B45",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Un hombro con olán en cascada y abertura.",
+   "ocasion": [
+    "noche",
+    "boda"
+   ],
+   "caption": "Amamos verlas brillar.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/azul-marino-olanes-1-420.webp",
+       "kb": 45
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/azul-marino-olanes-1-720.webp",
+       "kb": 106
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/azul-marino-olanes-1-1080.webp",
+       "kb": 176
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DZTlvr6lKmt/"
+    },
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/azul-marino-olanes-2-420.webp",
+       "kb": 73
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/azul-marino-olanes-2-720.webp",
+       "kb": 198
+      },
+      {
+       "w": 1080,
+       "src": "images/vestidos/azul-marino-olanes-2-1080.webp",
+       "kb": 389
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DZTlvr6lKmt/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "verde-olivo-satin",
+   "nombre": "Verde olivo satinado",
+   "color": "Verde olivo",
+   "colorHex": "#77762F",
+   "largo": "Largo",
+   "tela": "Satín",
+   "detalle": "Escote drapeado, tirantes finos y abertura lateral.",
+   "ocasion": [
+    "dia",
+    "noche"
+   ],
+   "caption": "Los colores más usados para esta temporada.",
+   "tipoItem": "vestido",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/verde-olivo-satin-1-420.webp",
+       "kb": 22
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/verde-olivo-satin-1-720.webp",
+       "kb": 46
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DZ8wsdcsYUm/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  }
+ ],
+ "accesorios": [
+  {
+   "id": "clutch-dorado-tejido",
+   "nombre": "Clutch dorado tejido",
+   "color": "Dorado",
+   "colorHex": "#C9A227",
+   "tipo": "Bolsa de mano",
+   "detalle": "Tejido de esferas doradas con asa de mano.",
+   "tipoItem": "accesorio",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/clutch-dorado-tejido-1-420.webp",
+       "kb": 36
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/clutch-dorado-tejido-1-720.webp",
+       "kb": 83
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DcPotrfnNJL/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "clutch-fucsia-plisado",
+   "nombre": "Clutch fucsia plisado",
+   "color": "Fucsia",
+   "colorHex": "#B4185C",
+   "tipo": "Clutch",
+   "detalle": "Plisado en satín con cierre de solapa.",
+   "tipoItem": "accesorio",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/clutch-fucsia-plisado-1-420.webp",
+       "kb": 16
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/clutch-fucsia-plisado-1-720.webp",
+       "kb": 42
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DcPotrfnNJL/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "clutch-negro-brillos",
+   "nombre": "Clutch negro con brillos",
+   "color": "Negro",
+   "colorHex": "#161616",
+   "tipo": "Clutch",
+   "detalle": "Tejido con hilo brillante y solapa curva.",
+   "tipoItem": "accesorio",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/clutch-negro-brillos-1-420.webp",
+       "kb": 12
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/clutch-negro-brillos-1-720.webp",
+       "kb": 29
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DcPotrfnNJL/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "clutch-plata-pedreria",
+   "nombre": "Clutch plata con pedrería",
+   "color": "Plata",
+   "colorHex": "#B9BDC4",
+   "tipo": "Clutch",
+   "detalle": "Satín plisado con orilla de pedrería.",
+   "tipoItem": "accesorio",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/clutch-plata-pedreria-1-420.webp",
+       "kb": 18
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/clutch-plata-pedreria-1-720.webp",
+       "kb": 49
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DcPotrfnNJL/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "clutch-verde-terciopelo",
+   "nombre": "Clutch verde en terciopelo",
+   "color": "Verde esmeralda",
+   "colorHex": "#0B5B44",
+   "tipo": "Clutch",
+   "detalle": "Terciopelo con nudo al centro.",
+   "tipoItem": "accesorio",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/clutch-verde-terciopelo-1-420.webp",
+       "kb": 7
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/clutch-verde-terciopelo-1-720.webp",
+       "kb": 15
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DcPotrfnNJL/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  },
+  {
+   "id": "clutch-champagne-mono",
+   "nombre": "Clutch champagne con moño",
+   "color": "Champagne",
+   "colorHex": "#C3A481",
+   "tipo": "Clutch",
+   "detalle": "Satín con moño al frente.",
+   "tipoItem": "accesorio",
+   "fotos": [
+    {
+     "variantes": [
+      {
+       "w": 420,
+       "src": "images/vestidos/clutch-champagne-mono-1-420.webp",
+       "kb": 7
+      },
+      {
+       "w": 720,
+       "src": "images/vestidos/clutch-champagne-mono-1-720.webp",
+       "kb": 14
+      }
+     ],
+     "origen": "https://www.instagram.com/p/DcPotrfnNJL/"
+    }
+   ],
+   "precioRenta": null,
+   "precioVenta": null,
+   "valorVestido": null,
+   "tallas": null,
+   "disponible": true
+  }
+ ],
+ "lookbook": [
+  {
+   "id": "look-01",
+   "alt": "Dos invitadas en una boda de jardín, una en terracota satinado y otra en negro con espalda de tiras.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-1-420.webp",
+     "kb": 51
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-1-720.webp",
+     "kb": 127
+    },
+    {
+     "w": 1080,
+     "src": "images/vestidos/look-1-1080.webp",
+     "kb": 236
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DbE_s6tOAG8/"
+  },
+  {
+   "id": "look-02",
+   "alt": "Dos amigas de gala, una en vino y otra en verde botella.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-2-420.webp",
+     "kb": 59
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-2-720.webp",
+     "kb": 161
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DZ3vaZ_nNKO/"
+  },
+  {
+   "id": "look-03",
+   "alt": "Dos amigas en un jardín, vestidos largos en rosa y verde.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-3-420.webp",
+     "kb": 55
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-3-720.webp",
+     "kb": 134
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DZ3vaZ_nNKO/"
+  },
+  {
+   "id": "look-04",
+   "alt": "Grupo de invitados en una boda, vestidos largos en rosa mexicano y estampado.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-4-420.webp",
+     "kb": 53
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-4-720.webp",
+     "kb": 148
+    },
+    {
+     "w": 1080,
+     "src": "images/vestidos/look-4-1080.webp",
+     "kb": 317
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DZlrDj_jHdM/"
+  },
+  {
+   "id": "look-05",
+   "alt": "Dos invitadas en vestidos largos vino y color topo.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-5-420.webp",
+     "kb": 62
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-5-720.webp",
+     "kb": 158
+    },
+    {
+     "w": 1080,
+     "src": "images/vestidos/look-5-1080.webp",
+     "kb": 294
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DYvh1/"
+  },
+  {
+   "id": "look-06",
+   "alt": "Dos amigas en una fiesta, vestidos largos en vino y café.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-6-420.webp",
+     "kb": 46
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-6-720.webp",
+     "kb": 124
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DYvh1/"
+  },
+  {
+   "id": "look-07",
+   "alt": "Pareja en un jardín, vestido azul marino de un hombro con olanes.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-7-420.webp",
+     "kb": 64
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-7-720.webp",
+     "kb": 153
+    },
+    {
+     "w": 1080,
+     "src": "images/vestidos/look-7-1080.webp",
+     "kb": 261
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DZTlvr6lKmt/"
+  },
+  {
+   "id": "look-08",
+   "alt": "Pareja en una terraza con palmeras, vestido verde esmeralda maxi.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-8-420.webp",
+     "kb": 81
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-8-720.webp",
+     "kb": 216
+    },
+    {
+     "w": 1080,
+     "src": "images/vestidos/look-8-1080.webp",
+     "kb": 406
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DX/"
+  },
+  {
+   "id": "look-09",
+   "alt": "Pareja de gala, vestido rojo de olanes con corte sirena.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-9-420.webp",
+     "kb": 53
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-9-720.webp",
+     "kb": 123
+    },
+    {
+     "w": 1080,
+     "src": "images/vestidos/look-9-1080.webp",
+     "kb": 211
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DYN_uxMN0HE/"
+  },
+  {
+   "id": "look-10",
+   "alt": "Madre e hija en vestidos halter negro y verde olivo.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-10-420.webp",
+     "kb": 36
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-10-720.webp",
+     "kb": 73
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DY3NX/"
+  },
+  {
+   "id": "look-11",
+   "alt": "Invitada en una boda con vestido midi de lentejuela bronce.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-11-420.webp",
+     "kb": 59
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-11-720.webp",
+     "kb": 147
+    },
+    {
+     "w": 1080,
+     "src": "images/vestidos/look-11-1080.webp",
+     "kb": 266
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DYdkiA0nGME/"
+  },
+  {
+   "id": "look-12",
+   "alt": "Pareja en una boda, vestido largo rosa mexicano de tul en capas.",
+   "variantes": [
+    {
+     "w": 420,
+     "src": "images/vestidos/look-12-420.webp",
+     "kb": 57
+    },
+    {
+     "w": 720,
+     "src": "images/vestidos/look-12-720.webp",
+     "kb": 157
+    },
+    {
+     "w": 1080,
+     "src": "images/vestidos/look-12-1080.webp",
+     "kb": 329
+    }
+   ],
+   "origen": "https://www.instagram.com/p/DZlrDj_jHdM/"
+  }
+ ]
+}

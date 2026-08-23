@@ -1,0 +1,270 @@
+<!-- ============================================================
+     AGENDAR CITA — sitio 100% estatico (GitHub Pages)
+     Patron ganador: WhatsApp deep link (primario)
+                   + Web3Forms (copia por correo, silenciosa)
+                   + .ics / Google Calendar (el cliente guarda la cita)
+     Sin build, sin servidor, sin secretos.
+     ============================================================ -->
+
+<section id="cita">
+  <h2>Agenda tu cita de prueba</h2>
+
+  <form id="form-cita" novalidate>
+    <!-- ---------- Vestidos: value = "Nombre|SKU|Precio" ---------- -->
+    <fieldset>
+      <legend>¿Cuáles te gustaría probar? (máx. 6)</legend>
+      <label><input type="checkbox" name="vestido" value="Amalia — largo verde esmeralda|AML-04|$1,800 / 3 días"> Amalia</label>
+      <label><input type="checkbox" name="vestido" value="Bruna — satín negro, corte sirena|BRN-11|$1,500 / 3 días"> Bruna</label>
+      <label><input type="checkbox" name="vestido" value="Céline — midi rojo & dorado|CEL-02|$2,100 / 3 días"> Céline</label>
+    </fieldset>
+
+    <label for="c-nombre">Nombre completo *</label>
+    <input id="c-nombre" name="nombre" autocomplete="name" required>
+    <p class="error" data-error-for="nombre" role="alert"></p>
+
+    <label for="c-tel">WhatsApp (10 dígitos) *</label>
+    <div class="tel-wrap"><span aria-hidden="true">+52</span>
+      <input id="c-tel" name="tel" type="tel" inputmode="numeric"
+             autocomplete="tel-national" maxlength="13"
+             placeholder="55 1234 5678" required
+             aria-describedby="tel-ayuda">
+    </div>
+    <small id="tel-ayuda">Solo LADA + número. Sin +52, sin 1.</small>
+    <p class="error" data-error-for="tel" role="alert"></p>
+
+    <label for="c-fecha">Fecha preferida *</label>
+    <input id="c-fecha" name="fecha" type="date" required>
+    <p class="error" data-error-for="fecha" role="alert"></p>
+
+    <label for="c-hora">Horario *</label>
+    <select id="c-hora" name="hora" required>
+      <option value="">Elige…</option>
+      <option>11:00</option><option>12:00</option><option>13:00</option>
+      <option>16:00</option><option>17:00</option><option>18:00</option>
+    </select>
+    <p class="error" data-error-for="hora" role="alert"></p>
+
+    <label for="c-evento">¿Para qué evento?</label>
+    <input id="c-evento" name="evento" placeholder="Boda, graduación, XV…">
+
+    <label for="c-notas">Algo más que debamos saber</label>
+    <textarea id="c-notas" name="notas" rows="3" maxlength="400"></textarea>
+
+    <button type="submit" id="btn-wa">Enviar por WhatsApp</button>
+    <p class="error" data-error-for="_global" role="alert"></p>
+  </form>
+
+  <!-- Aparece despues de enviar -->
+  <div id="cita-ok" hidden>
+    <p>Listo. Te contestamos en WhatsApp para confirmar. Guarda la cita:</p>
+    <a id="btn-ics" download="cita-vestidos.ics">Descargar .ics (Apple / Outlook)</a>
+    <a id="btn-gcal" target="_blank" rel="noopener">Añadir a Google Calendar</a>
+  </div>
+</section>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ══════════ CONFIGURACION ══════════ */
+  const CFG = {
+    // Numero de WhatsApp del negocio en E.164 SIN "+": 52 + 10 digitos.
+    // OJO Mexico: usa 52 + 10 digitos. NO uses 521 (formato viejo).
+    waNumero:   '525512345678',
+    negocio:    'Boutique Luna',
+    direccion:  'Av. Insurgentes Sur 123, Col. Roma, CDMX',
+    duracionMin: 60,
+    tz:         'America/Mexico_City',
+    tzOffset:   '-06:00',            // Mexico ya no usa horario de verano (desde 2022)
+    maxVestidos: 6,
+    // Access key publica de Web3Forms. NO es secreta: es un alias de tu correo.
+    // El correo real NUNCA aparece en el HTML -> los bots no lo pueden cosechar.
+    web3formsKey: 'TU-ACCESS-KEY-UUID'
+  };
+
+  /* ══════════ 1. TELEFONO MEXICANO ══════════ */
+  // Normaliza cualquier cosa que escriba el usuario a 10 digitos nacionales.
+  function normalizaTelMX(raw) {
+    let d = String(raw || '').replace(/\D+/g, '');
+    if (d.startsWith('0052'))                       d = d.slice(4);  // 0052 + 10
+    if (d.startsWith('521') && d.length === 13)     d = d.slice(3);  // 52-1-10 (legado)
+    else if (d.startsWith('52') && d.length === 12) d = d.slice(2);  // 52 + 10
+    if ((d.startsWith('044') || d.startsWith('045')) && d.length === 13) d = d.slice(3);
+    return d;
+  }
+  // 10 digitos, primer digito 2-9 (en Mexico ninguna LADA empieza con 0 o 1).
+  const esTelMXValido = d => /^[2-9]\d{9}$/.test(d);
+  const fmtTel = d => d.length === 10 ? `${d.slice(0,2)} ${d.slice(2,6)} ${d.slice(6)}` : d;
+
+  const $ = s => document.querySelector(s);
+  const form = $('#form-cita'), inputTel = $('#c-tel');
+
+  // Formatea mientras escribe, sin pelearse con el cursor al borrar.
+  inputTel.addEventListener('input', () => {
+    const d = normalizaTelMX(inputTel.value).slice(0, 10);
+    const enFin = inputTel.selectionStart === inputTel.value.length;
+    inputTel.value = fmtTel(d);
+    if (enFin) inputTel.setSelectionRange(inputTel.value.length, inputTel.value.length);
+  });
+
+  // Minimo = hoy
+  $('#c-fecha').min = new Date(Date.now() - new Date().getTimezoneOffset()*6e4)
+                        .toISOString().slice(0,10);
+
+  /* ══════════ 2. LEER Y VALIDAR ══════════ */
+  const leerVestidos = () =>
+    [...form.querySelectorAll('input[name="vestido"]:checked')].map(c => {
+      const [nombre, sku, precio] = c.value.split('|');
+      return { nombre, sku, precio };
+    });
+
+  function leerDatos() {
+    const fd = new FormData(form), t = k => (fd.get(k) || '').trim();
+    return { nombre: t('nombre'), tel: normalizaTelMX(t('tel')), fecha: t('fecha'),
+             hora: t('hora'), evento: t('evento'), notas: t('notas'),
+             vestidos: leerVestidos() };
+  }
+
+  function valida(d) {
+    const e = {};
+    if (d.nombre.length < 3)        e.nombre = 'Escribe tu nombre completo.';
+    if (!esTelMXValido(d.tel))      e.tel = 'Necesitamos 10 dígitos: LADA + número (ej. 55 1234 5678).';
+    if (!d.fecha)                   e.fecha = 'Elige una fecha.';
+    else if (new Date(d.fecha + 'T23:59:59') < new Date()) e.fecha = 'Esa fecha ya pasó.';
+    if (!d.hora)                    e.hora = 'Elige un horario.';
+    if (d.vestidos.length > CFG.maxVestidos)
+      e._global = `Máximo ${CFG.maxVestidos} vestidos por cita.`;
+
+    form.querySelectorAll('[data-error-for]').forEach(n => {
+      n.textContent = e[n.dataset.errorFor] || '';
+    });
+    const primero = Object.keys(e)[0];
+    if (primero && primero !== '_global') form.querySelector(`[name="${primero}"]`)?.focus();
+    return Object.keys(e).length === 0;
+  }
+
+  /* ══════════ 3. MENSAJE DE WHATSAPP ══════════ */
+  const fechaLarga = f => new Date(f + 'T12:00:00').toLocaleDateString('es-MX',
+    { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  function armaMensaje(d) {
+    const L = [`Hola ${CFG.negocio}, quiero agendar una cita para probar vestidos.`, '',
+               `Nombre: ${d.nombre}`,
+               `WhatsApp: +52 ${fmtTel(d.tel)}`,
+               `Fecha: ${fechaLarga(d.fecha)} a las ${d.hora}`];
+    if (d.evento) L.push(`Evento: ${d.evento}`);
+    if (d.vestidos.length) {
+      L.push('', `Vestidos (${d.vestidos.length}):`);
+      d.vestidos.forEach(v =>
+        L.push(`• ${v.nombre} [${v.sku}]${v.precio ? ' — ' + v.precio : ''}`));
+    }
+    if (d.notas) L.push('', `Notas: ${d.notas}`);
+    L.push('', `(enviado desde ${location.hostname})`);
+    return L.join('\n');
+  }
+
+  // encodeURIComponent es lo correcto: convierte espacio->%20 (no "+"),
+  // salto de linea->%0A, y deja acentos/emoji como UTF-8 percent-encoded.
+  const urlWhatsApp = (num, txt) => `https://wa.me/${num}?text=${encodeURIComponent(txt)}`;
+
+  /* ══════════ 4. .ICS + GOOGLE CALENDAR ══════════ */
+  // RFC 5545: hay que escapar \ ; , y saltos de linea EN ESE ORDEN.
+  // CUIDADO: en el codigo fuente JS el escape del ';' se escribe '\\;'
+  //          ('\;' se colapsa a ';' y el .ics sale corrupto).
+  const escICS = s => String(s)
+    .replace(/\\/g, '\\\\').replace(/;/g, '\\;')
+    .replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+
+  const enc = new TextEncoder();
+  function fold(line) {                       // lineas <= 75 octetos
+    if (enc.encode(line).length <= 73) return line;
+    const out = []; let cur = '';
+    for (const ch of line) {
+      if (enc.encode(cur + ch).length > 73) { out.push(cur); cur = ' ' + ch; }
+      else cur += ch;
+    }
+    out.push(cur);
+    return out.join('\r\n');
+  }
+  const z = n => String(n).padStart(2, '0');
+  const utc = d => d.getUTCFullYear() + z(d.getUTCMonth()+1) + z(d.getUTCDate()) +
+                   'T' + z(d.getUTCHours()) + z(d.getUTCMinutes()) + '00Z';
+  const rango = d => {
+    const ini = new Date(`${d.fecha}T${d.hora}:00${CFG.tzOffset}`);
+    return [ini, new Date(ini.getTime() + CFG.duracionMin * 60000)];
+  };
+  const descripcion = d =>
+    'Cita para probar vestidos.' +
+    (d.vestidos.length ? ' Vestidos: ' + d.vestidos.map(v => `${v.nombre} [${v.sku}]`).join('; ') + '.' : '') +
+    (d.notas ? ' Notas: ' + d.notas : '');
+
+  function buildICS(d) {
+    const [ini, fin] = rango(d);
+    return ['BEGIN:VCALENDAR', 'VERSION:2.0',
+      `PRODID:-//${CFG.negocio}//Citas//ES`, 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${utc(ini)}-${d.tel}@${location.hostname || 'local'}`,
+      `DTSTAMP:${utc(new Date())}`, `DTSTART:${utc(ini)}`, `DTEND:${utc(fin)}`,
+      `SUMMARY:${escICS('Cita de vestidos — ' + CFG.negocio)}`,
+      `DESCRIPTION:${escICS(descripcion(d))}`,
+      `LOCATION:${escICS(CFG.direccion)}`,
+      'BEGIN:VALARM', 'TRIGGER:-PT2H', 'ACTION:DISPLAY',
+      `DESCRIPTION:${escICS('Tu cita en ' + CFG.negocio)}`, 'END:VALARM',
+      'END:VEVENT', 'END:VCALENDAR'
+    ].map(fold).join('\r\n') + '\r\n';
+  }
+
+  function urlGCal(d) {
+    const [ini, fin] = rango(d);
+    const p = new URLSearchParams({
+      action: 'TEMPLATE', text: `Cita de vestidos — ${CFG.negocio}`,
+      dates: `${utc(ini)}/${utc(fin)}`, details: descripcion(d),
+      location: CFG.direccion, ctz: CFG.tz
+    });
+    return 'https://calendar.google.com/calendar/render?' + p;
+  }
+
+  /* ══════════ 5. COPIA POR CORREO (Web3Forms, sin exponer el correo) ══════════ */
+  function copiaPorCorreo(d, mensaje) {
+    if (!CFG.web3formsKey || CFG.web3formsKey.startsWith('TU-')) return;
+    const body = new FormData();
+    body.append('access_key', CFG.web3formsKey);           // publica, es un alias
+    body.append('subject', `Cita: ${d.nombre} — ${d.fecha} ${d.hora}`);
+    body.append('from_name', 'Sitio web · citas');
+    body.append('Nombre', d.nombre);
+    body.append('WhatsApp', '+52' + d.tel);
+    body.append('Fecha', `${d.fecha} ${d.hora}`);
+    body.append('Evento', d.evento || '—');
+    body.append('Vestidos', d.vestidos.map(v => `${v.nombre} [${v.sku}]`).join(' / ') || '—');
+    body.append('Notas', d.notas || '—');
+    body.append('Mensaje enviado', mensaje);
+    // keepalive: la peticion sobrevive aunque el navegador se vaya a WhatsApp.
+    fetch('https://api.web3forms.com/submit', { method: 'POST', body, keepalive: true })
+      .catch(() => {});                                    // nunca bloquea al usuario
+  }
+
+  /* ══════════ 6. SUBMIT ══════════ */
+  form.addEventListener('submit', ev => {
+    ev.preventDefault();
+    const d = leerDatos();
+    if (!valida(d)) return;
+
+    const mensaje = armaMensaje(d);
+    const url = urlWhatsApp(CFG.waNumero, mensaje);
+
+    copiaPorCorreo(d, mensaje);          // 1) respaldo silencioso
+
+    const ok = $('#cita-ok');            // 2) botones de calendario
+    ok.hidden = false;
+    const blob = new Blob([buildICS(d)], { type: 'text/calendar;charset=utf-8' });
+    const btnIcs = $('#btn-ics');
+    if (btnIcs.dataset.url) URL.revokeObjectURL(btnIcs.dataset.url);
+    btnIcs.href = btnIcs.dataset.url = URL.createObjectURL(blob);
+    $('#btn-gcal').href = urlGCal(d);
+
+    // 3) abre WhatsApp. Sin target=_blank: en iOS el popup blocker
+    //    mata la pestaña nueva si no hay gesto directo del usuario.
+    window.location.href = url;
+  });
+})();
+</script>
