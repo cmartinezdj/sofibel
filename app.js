@@ -162,27 +162,35 @@ const waLink = (texto) => `https://wa.me/${CONFIG.wa}?text=${encodeURIComponent(
 
   /* revelado al entrar al encuadre, una sola vez */
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let ojoCorrio = false;
   const ojo = new IntersectionObserver((filas) => {
-    ojoCorrio = true;
     filas.forEach((f) => {
       if (!f.isIntersecting) return;
       f.target.dataset.visto = 'si';
       ojo.unobserve(f.target);
     });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
-  const revelaTodo = () => $$('.revela, .escalona').forEach((el) => { el.dataset.visto = 'si'; });
+  const revelaTodo = () => {
+    /* La clase apaga la transición: si el reloj de animación está congelado
+       (pestaña que nunca se mostró, restauración desde caché), la transición
+       no avanza y la opacidad se queda en 0 aunque el atributo ya esté puesto.
+       Aquí se salta directo al valor final. */
+    document.documentElement.classList.add('revelado-directo');
+    $$('.revela, .escalona').forEach((el) => { el.dataset.visto = 'si'; });
+  };
   const mira = () => $$('.revela:not([data-visto]), .escalona:not([data-visto])')
     .forEach((el) => (reduce ? (el.dataset.visto = 'si') : ojo.observe(el)));
   mira();
   window.sofibelMira = mira;      // el catálogo lo llama cuando pinta piezas
 
-  /* Red de seguridad: si el observador nunca reporta (pasa cuando el navegador
-     da una altura de ventana de 0, por ejemplo en una pestaña que nunca se
-     mostró), todo el contenido se quedaría en opacity 0 y la página se vería
-     vacía. Vale mucho más perder la animación que perder el contenido. */
-  setTimeout(() => { if (!ojoCorrio) revelaTodo(); }, 2500);
-  window.addEventListener('pageshow', () => { if (!ojoCorrio) revelaTodo(); });
+  /* Red de seguridad. Se revisa el RESULTADO, no si el observador corrió: el
+     modo de falla real es que sí corra y reporte "nada visible" para siempre
+     (pasa cuando el navegador entrega innerHeight en 0, por ejemplo en una
+     pestaña que nunca se mostró). Si a los 2.5 s no se reveló ni un bloque,
+     estando la portada obviamente a la vista, se revela todo: vale mucho más
+     perder la animación que perder el contenido. */
+  const red = () => { if (!$('[data-visto="si"]')) revelaTodo(); };
+  setTimeout(red, 2500);
+  window.addEventListener('pageshow', () => setTimeout(red, 400));
 })();
 
 /* --------------------------------------------------- 5. catálogo y ficha */
@@ -495,17 +503,16 @@ function pintaReels(reels) {
     marco.dataset.cargado = 'si';
     marco.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${L.lat}%2C${L.lon}`;
   };
-  let ojoCorrio = false;
+  /* El observador lo trae antes si la clienta llega rápido hasta aquí. */
   const ojo = new IntersectionObserver(([e]) => {
-    ojoCorrio = true;
     if (!e.isIntersecting) return;
-    cargaMapa();
-    ojo.disconnect();
-  }, { rootMargin: '300px' });
+    cargaMapa(); ojo.disconnect();
+  }, { rootMargin: '400px' });
   ojo.observe(marco);
-  /* Si el observador no reporta, el mapa se cargaría nunca y quedaría un
-     rectángulo muerto. Mismo criterio que en el revelado. */
-  setTimeout(() => { if (!ojoCorrio) cargaMapa(); }, 4000);
+  /* Y si no, entra igual poco después de load. El mapa está debajo del pliegue,
+     así que no compite con el LCP, y así nunca queda un rectángulo muerto. */
+  const tras = () => setTimeout(cargaMapa, 1500);
+  document.readyState === 'complete' ? tras() : window.addEventListener('load', tras);
 })();
 
 /* ----------------------------- 8. cita -------------------------------- */

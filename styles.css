@@ -869,6 +869,11 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
   transition-delay: calc(var(--i, 0) * 55ms);
 }
 .sin-js .revela, .sin-js .escalona > * { opacity: 1; transform: none; }
+/* Salida de emergencia: se ve el contenido sin depender del reloj de animación. */
+.revelado-directo .revela,
+.revelado-directo .escalona > * {
+  opacity: 1 !important; transform: none !important; transition: none !important;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
