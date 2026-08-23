@@ -210,24 +210,64 @@ const guardaFavoritos = () => {
 
 const icono = (n) => `<svg class="icono" aria-hidden="true"><use href="#i-${n}"></use></svg>`;
 
-/** <img> responsivo a partir del arreglo de variantes del JSON */
-function img(foto, sizes, alt, extra = '') {
+/** <img> responsivo a partir del arreglo de variantes del JSON.
+ *
+ *  Por defecto NO trae src: lo pone el observador de Difiere cuando la foto se
+ *  acerca. Es a propósito. `loading="lazy"` no sirve aquí porque las 27 tarjetas
+ *  se insertan de golpe con innerHTML, antes de que el navegador calcule el
+ *  layout: en ese momento las ve todas en pantalla y se bajaba el catálogo
+ *  completo de una (5.35 MB, unos 9 segundos en 4G).
+ *  `ya: true` es para las primeras fotos, que sí deben pintar de inmediato.
+ */
+function img(foto, sizes, alt, extra = '', ya = false) {
   const v = foto.variantes;
   const grande = v[v.length - 1];
   const srcset = v.map((x) => `${x.src} ${x.w}w`).join(', ');
-  return `<img src="${grande.src}" srcset="${srcset}" sizes="${sizes}"
-    width="${grande.w}" height="${Math.round(grande.w * 1.5)}"
-    alt="${esc(alt)}" loading="lazy" decoding="async" ${extra}>`;
+  const medidas = `width="${grande.w}" height="${Math.round(grande.w * 1.5)}"`;
+  const fuente = ya
+    ? `src="${grande.src}" srcset="${srcset}"`
+    : `data-src="${grande.src}" data-srcset="${srcset}"`;
+  return `<img ${fuente} sizes="${sizes}" ${medidas}
+    alt="${esc(alt)}" decoding="async" ${extra}>`;
 }
+
+/* ------------------------------------------------- carga diferida de fotos */
+const Difiere = {
+  ojo: null,
+  reporto: false,
+  arranca() {
+    if (this.ojo) { this.mira(); return; }
+    this.ojo = new IntersectionObserver((filas) => {
+      this.reporto = true;
+      filas.forEach((f) => {
+        if (!f.isIntersecting) return;
+        this.trae(f.target);
+        this.ojo.unobserve(f.target);
+      });
+    }, { rootMargin: '800px 0px' });   /* holgado: llega antes de que se vea */
+    this.mira();
+    /* Misma red que en el revelado: si el observador no reporta, las fotos se
+       quedarían en blanco para siempre. Se traen todas y ya. */
+    setTimeout(() => { if (!this.reporto) this.todas(); }, 3000);
+  },
+  mira() { $$('img[data-src]').forEach((el) => this.ojo.observe(el)); },
+  trae(el) {
+    if (el.dataset.srcset) el.srcset = el.dataset.srcset;
+    if (el.dataset.src) el.src = el.dataset.src;
+    delete el.dataset.src; delete el.dataset.srcset;
+  },
+  todas() { $$('img[data-src]').forEach((el) => this.trae(el)); },
+};
 
 function altDe(p, i = 0) {
   const que = p.tipoItem === 'accesorio' ? p.tipo.toLowerCase() : 'vestido';
   return `${p.nombre}, ${que} ${p.color.toLowerCase()} en renta en SOFIBÉL${i ? ', otra toma' : ''}.`;
 }
 
-function tarjeta(p) {
+function tarjeta(p, i = 0) {
   const f1 = p.fotos[0];
   const f2 = p.fotos[1];
+  const ya = i < 6;                 /* la primera fila y media, sin esperar */
   const meta = p.tipoItem === 'accesorio'
     ? `${p.tipo} · ${p.color}`
     : `${p.largo} · ${p.tela} · ${p.color}`;
@@ -244,7 +284,7 @@ function tarjeta(p) {
     </button>
     <button class="pieza-boton" type="button" data-abre="${p.id}">
       <span class="pieza-foto">
-        ${img(f1, '(min-width:64rem) 20vw, (min-width:40rem) 30vw, 46vw', altDe(p), 'class="frente"')}
+        ${img(f1, '(min-width:64rem) 20vw, (min-width:40rem) 30vw, 46vw', altDe(p), 'class="frente"', ya)}
         ${f2 ? img(f2, '(min-width:64rem) 20vw, (min-width:40rem) 30vw, 46vw', altDe(p, 1), 'class="reverso"') : ''}
       </span>
       <span class="pieza-pie">
@@ -419,8 +459,8 @@ function mensajeVestido(p) {
 /* ----------------------------- render ---------------------------------- */
 function pintaCatalogo() {
   const d = Tienda.datos;
-  $('#rejilla-vestidos').innerHTML = d.vestidos.map(tarjeta).join('');
-  $('#riel-accesorios').innerHTML = d.accesorios.map(tarjeta).join('');
+  $('#rejilla-vestidos').innerHTML = d.vestidos.map((p, i) => tarjeta(p, i)).join('');
+  $('#riel-accesorios').innerHTML = d.accesorios.map((p, i) => tarjeta(p, i + 99)).join('');
   $('#rejilla-look').innerHTML = d.lookbook.map((l, i) => `
     <figure style="--i:${i % 4}">
       <a href="${esc(l.origen)}" target="_blank" rel="noopener" aria-label="Ver esta foto en el Instagram de SOFIBÉL">
@@ -430,6 +470,7 @@ function pintaCatalogo() {
   pintaChips();
   aplicaFiltro();
   pintaFavoritos();
+  Difiere.arranca();
   if (window.sofibelMira) window.sofibelMira();
 }
 
@@ -438,8 +479,10 @@ function pintaReels(reels) {
   $('#rejilla-reels').innerHTML = reels.map((r) => `
     <figure class="reel" data-code="${esc(r.code)}">
       <div class="lienzo">
-        <img src="${esc(r.poster)}" width="720" height="1280" loading="lazy" decoding="async" alt="${esc(r.alt)}">
-        <video muted loop playsinline preload="none" poster="${esc(r.poster)}"
+        <img data-src="${esc(r.poster)}" width="720" height="1280" decoding="async" alt="${esc(r.alt)}">
+        <!-- sin poster= en el <video>: esa foto la pone el <img> de arriba, y el
+             atributo poster se descarga siempre, aunque el video no se toque. -->
+        <video muted loop playsinline preload="none"
                aria-label="${esc(r.alt)}"><source src="${esc(r.mp4)}" type="video/mp4"></video>
         <button class="reel-play" type="button" aria-label="Reproducir: ${esc(r.titulo)}">
           <span>${icono('play')}</span></button>
@@ -849,7 +892,7 @@ document.addEventListener('keydown', (e) => {
     ]);
     Tienda.datos = v;
     pintaCatalogo();
-    if (r.reels && r.reels.length) pintaReels(r.reels);
+    if (r.reels && r.reels.length) { pintaReels(r.reels); Difiere.mira(); }
     else $('#reels').hidden = true;
   } catch (err) {
     /* si los datos no cargan, el catálogo no se queda en blanco callado */
