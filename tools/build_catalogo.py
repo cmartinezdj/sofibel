@@ -226,6 +226,17 @@ LOOK = [
 
 # Recortes especiales que no son ficha de producto. Viven aquí para que no se
 # borren cuando el script limpia images/vestidos/ al empezar.
+# El video corto va en la FICHA del vestido, que es donde sirve: una foto no dice
+# como cae la falda al caminar. Es el patron de Rent the Runway y TrenLend, no la
+# reja de reels de Instagram. Clave = id del vestido, valor = codigo del reel.
+VIDEOS = {
+ 'verde-esmeralda-tul':   'Day00i0BYo8',
+ 'menta-lentejuela':      'DcKWiMKsfFx',
+ 'naranja-un-hombro':     'DaeF2J6P32r',
+ 'champagne-espalda':     'DYVy2gLyi1x',
+ 'rojo-hombros-caidos':   'DYDnAcIBK_D',
+}
+
 EXTRAS = [
  # (archivo, x0, y0, x1, y1, slug)  recorte manual en píxeles de la foto original
  ('Db6nJ0NFJEI-1.jpg', 95, 380, 742, 1350, 'manifiesto-1'),
@@ -289,6 +300,10 @@ def main():
             e.setdefault('valorVestido', None)
             e.setdefault('tallas', None)
             e.setdefault('disponible', True)
+            if e['id'] in VIDEOS:
+                c = VIDEOS[e['id']]
+                e['video'] = {'mp4': f'videos/web/{c}.mp4', 'poster': f'videos/web/{c}.webp',
+                              'instagram': f'https://www.instagram.com/reel/{c}/'}
             salida.append(e)
             print(f"  {e['id']:28s} {len(fotos)} foto(s)  {sum(len(f['variantes']) for f in fotos)} webp")
         return salida

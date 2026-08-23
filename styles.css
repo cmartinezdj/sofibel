@@ -508,7 +508,7 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / .18);
 }
 .barra-filtros {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.2rem;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem 1rem;
   padding-block: 0.6rem; border-top: 1px solid var(--filete);
 }
 .conteo { font-size: 0.85rem; color: var(--tinta-suave); }
@@ -524,14 +524,23 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 @media (min-width: 40rem)  { .rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (min-width: 64rem)  { .rejilla { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (min-width: 86rem)  { .rejilla { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-.pieza { display: grid; }
+/* position: relative es obligatorio aqui: el corazon va absoluto y sin esto se
+   posicionaba respecto a la pagina, no a su tarjeta, y los 33 acababan
+   apilados en una esquina. display:grid solo no crea el contexto. */
+.pieza { display: grid; position: relative; }
 .pieza[hidden] { display: none; }
 
+/* La tarjeta es un <a> real a la publicacion de Instagram, para que sirva sin
+   JavaScript. Pero no debe LEERSE como un enlace: nada de subrayados. */
 .pieza-boton {
   display: grid; gap: 0.7rem;
   padding: 0; border: 0; background: none; text-align: left; cursor: pointer;
   color: inherit;
+  text-decoration: none;
 }
+.pieza-boton:hover, .pieza-boton:focus { text-decoration: none; }
+.pieza-boton .nombre, .pieza-boton .meta { color: var(--tinta); }
+.pieza-boton .meta { color: var(--tinta-suave); }
 .pieza-foto {
   position: relative;
   aspect-ratio: 2 / 3;
@@ -584,7 +593,14 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 .vacio-filtro[hidden] { display: none; }
 
 /* ------------------------------------------------------- 11. riel accesorios */
-.riel-envoltura { position: relative; }
+.riel-envoltura {
+  position: relative;
+  margin-top: clamp(3rem, 2.2rem + 3vw, 5rem);
+  padding-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+  border-top: 1px solid var(--filete);
+}
+.riel-envoltura h3 { font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.7rem); }
+.riel-envoltura > p { margin: 0.5rem 0 1.4rem; color: var(--tinta-suave); }
 .riel {
   display: grid; grid-auto-flow: column;
   grid-auto-columns: minmax(12.5rem, 15rem);
@@ -892,22 +908,74 @@ section { padding-block: clamp(3.75rem, 2.6rem + 5vw, 6.5rem); }
 .reglas-renta .icono { color: var(--rosa-honda); margin-top: 0.15em; }
 .cajon-acciones { display: grid; gap: 0.6rem; margin-top: 1.4rem; }
 
-/* --------------------------------------------------------------- 21. cinta */
-.cinta-favoritos {
-  position: fixed; inset: auto 0 0 0; z-index: var(--z-cinta);
-  display: flex; align-items: center; justify-content: center; gap: 1rem;
-  padding: 0.8rem var(--canal);
-  background: var(--velo-tinta);
-  color: var(--papel);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  transform: translateY(110%);
-  transition: transform 260ms var(--ease-out);
+
+/* --------------------------------------- 20b. el video dentro de la ficha */
+/* Va aqui y no en una reja aparte: la duda que resuelve es "como se mueve
+   ESTE vestido", y esa duda se tiene mirando este vestido. */
+.ficha-video { margin: 1.3rem 0 0; }
+.ficha-video .lienzo {
+  position: relative; aspect-ratio: 9 / 16;
+  border-radius: var(--r-borde); overflow: hidden; background: var(--tarjeta);
 }
-.cinta-favoritos[data-visible="si"] { transform: translateY(0); }
-.cinta-favoritos p { font-size: 0.88rem; margin: 0; }
-.cinta-favoritos .btn-primario { background: var(--papel); color: var(--tinta); }
-@media (hover: hover) and (pointer: fine) {
-  .cinta-favoritos .btn-primario:hover { background: var(--tarjeta); }
+.ficha-video img, .ficha-video video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.ficha-video video { opacity: 0; transition: opacity 240ms var(--ease-out); }
+.ficha-video[data-jugando="si"] video { opacity: 1; }
+.ficha-video figcaption {
+  margin-top: 0.5rem; font-size: 0.82rem; color: var(--tinta-suave);
+}
+@supports not (aspect-ratio: 2 / 3) {
+  .ficha-video .lienzo { height: 0; padding-top: 177.78%; }
+}
+
+/* ----------------------------------------- 21. barra de accion (movil) */
+/* En un negocio que vive de la cita, el boton de agendar no puede quedarse
+   arriba y perderse: en telefono va fijo abajo, al alcance del pulgar. Es lo
+   que hacen las rentadoras que convierten. En escritorio no aparece, porque
+   ahi el boton del encabezado siempre esta a la vista. */
+.barra-accion {
+  position: fixed; inset: auto 0 0 0; z-index: var(--z-cinta);
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 0.6rem;
+  padding: 0.6rem clamp(0.8rem, 4vw, 1.2rem);
+  padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
+  background: var(--velo-papel);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--filete);
+}
+.barra-accion .btn-primario { width: 100%; }
+@media (min-width: 48rem) { .barra-accion { display: none; } }
+/* el pie necesita aire para que la barra no lo tape */
+@media (max-width: 47.99rem) { .pie { padding-bottom: 6rem; } }
+
+/* ------------------------------------------------- 21b. hoja de filtros */
+/* Los filtros de color, largo y tela son 30 chips. En una fila envuelta se
+   comen media pantalla del telefono, asi que viven en una hoja que sube. */
+.hoja-filtros {
+  position: fixed; inset: auto 0 0 0; z-index: var(--z-cajon);
+  display: grid; grid-template-rows: auto 1fr auto;
+  max-height: 88dvh; max-height: 88vh;
+  background: var(--papel);
+  border-top-left-radius: 14px; border-top-right-radius: 14px;
+  box-shadow: var(--sombra-3);
+  transform: translateY(100%);
+  transition: transform 280ms var(--ease-cajon);
+}
+.hoja-filtros[hidden] { display: none; }
+.hoja-filtros[data-visible="si"] { transform: translateY(0); }
+@media (min-width: 48rem) {
+  .hoja-filtros {
+    inset: 0 0 0 auto; max-height: none; width: min(26rem, 100%);
+    border-radius: 0; transform: translateX(100%);
+  }
+  .hoja-filtros[data-visible="si"] { transform: translateX(0); }
+}
+.hoja-filtros-pie {
+  display: grid; grid-template-columns: auto 1fr; gap: 0.6rem; align-items: center;
+  padding: 0.9rem 1.35rem;
+  padding-bottom: max(0.9rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--filete);
 }
 
 /* ------------------------------------------------------------------- 22. pie */

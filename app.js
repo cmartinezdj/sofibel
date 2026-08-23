@@ -334,27 +334,36 @@ function tarjeta(p, i = 0) {
 
 function pintaChips() {
   const d = Tienda.datos;
+
+  /* La ocasion se queda a la vista: es el eje por el que la clienta busca
+     (boda, XV, graduacion). Color, largo y tela son 30 chips y se van a la
+     hoja, porque en un telefono una fila envuelta se come media pantalla. */
   const oc = $('#chips-ocasion');
-  oc.innerHTML = `<button class="chip" type="button" aria-pressed="true" data-f="ocasion" data-v="">Todos</button>` +
-    d.ocasiones.map((o) => {
-      const n = d.vestidos.filter((v) => (v.ocasion || []).includes(o.id)).length;
-      return n ? `<button class="chip" type="button" aria-pressed="false" data-f="ocasion" data-v="${o.id}">${esc(o.nombre)}</button>` : '';
-    }).join('');
+  if (oc && !oc.querySelector('.chip')) {
+    oc.innerHTML = '<button class="chip" type="button" aria-pressed="true" data-f="ocasion" data-v="">Todos</button>' +
+      d.ocasiones.map((o) => {
+        const n = d.vestidos.filter((v) => (v.ocasion || []).includes(o.id)).length;
+        return n ? `<button class="chip" type="button" aria-pressed="false" data-f="ocasion" data-v="${o.id}">${esc(o.nombre)}</button>` : '';
+      }).join('');
+  }
 
   const colores = [];
   d.vestidos.forEach((v) => { if (!colores.some((c) => c.n === v.color)) colores.push({ n: v.color, hex: v.colorHex }); });
   colores.sort((a, b) => a.n.localeCompare(b.n, 'es'));
-  $('#chips-color').innerHTML =
-    `<button class="chip" type="button" aria-pressed="true" data-f="color" data-v="">Todos los colores</button>` +
-    colores.map((c) => `<button class="chip" type="button" aria-pressed="false" data-f="color" data-v="${esc(c.n)}">
+  const cc = $('#chips-color');
+  if (cc) cc.innerHTML = colores.map((c) => `<button class="chip" type="button" aria-pressed="false" data-f="color" data-v="${esc(c.n)}">
       <span class="punto-color" style="background:${esc(c.hex)}"></span>${esc(c.n)}</button>`).join('');
 
   const largos = [...new Set(d.vestidos.map((v) => v.largo))].filter(Boolean);
+  const cl = $('#chips-largo');
+  if (cl) cl.innerHTML = largos.map((l) => `<button class="chip" type="button" aria-pressed="false" data-f="largo" data-v="${esc(l)}">${esc(l)}</button>`).join('');
+
   const telas = [...new Set(d.vestidos.map((v) => v.tela))].filter(Boolean).sort((a, b) => a.localeCompare(b, 'es'));
-  $('#chips-largo').innerHTML =
-    largos.map((l) => `<button class="chip" type="button" aria-pressed="false" data-f="largo" data-v="${esc(l)}">${esc(l)}</button>`).join('') +
-    telas.map((t) => `<button class="chip" type="button" aria-pressed="false" data-f="tela" data-v="${esc(t)}">${esc(t)}</button>`).join('') +
-    `<button class="chip" type="button" aria-pressed="false" data-f="soloFavoritos" data-v="1">${icono('heart')} Mis favoritos</button>`;
+  const ct = $('#chips-tela');
+  if (ct) ct.innerHTML = telas.map((t) => `<button class="chip" type="button" aria-pressed="false" data-f="tela" data-v="${esc(t)}">${esc(t)}</button>`).join('');
+
+  const cf = $('#chips-favoritos');
+  if (cf) cf.innerHTML = `<button class="chip" type="button" aria-pressed="false" data-f="soloFavoritos" data-v="1">${icono('heart')} Solo mis favoritos</button>`;
 }
 
 function aplicaFiltro() {
@@ -371,6 +380,8 @@ function aplicaFiltro() {
     if (ok) vistos++;
   });
   $('#conteo').innerHTML = `<b class="num">${vistos}</b> ${vistos === 1 ? 'vestido' : 'vestidos'}`;
+  const ch = $('#conteo-hoja');
+  if (ch) ch.textContent = vistos;
   $('#vacio-filtro').hidden = vistos > 0;
   const activo = f.ocasion || f.color || f.largo || f.tela || f.soloFavoritos;
   $('#limpiar-filtros').hidden = !activo;
@@ -392,8 +403,8 @@ function pintaFavoritos() {
   const badge = $('#cuenta-favoritos');
   badge.textContent = n;
   badge.hidden = n === 0;
-  $('#cinta-cuenta').textContent = n;
-  $('#cinta-favoritos').dataset.visible = n > 0 ? 'si' : 'no';
+  const badgeBarra = $('#cuenta-favoritos-barra');
+  if (badgeBarra) { badgeBarra.textContent = n; badgeBarra.hidden = n === 0; }
   $$('[data-fav]').forEach((b) => b.setAttribute('aria-pressed', String(Tienda.favoritos.has(b.dataset.fav))));
 
   const cont = $('#fichas-elegidas');
@@ -429,6 +440,18 @@ function abreCajon(id, disparador) {
   $('#cajon-rotulo').textContent = esAcc ? 'Accesorio' : 'Vestido';
   $('#cajon-cuerpo').innerHTML = `
     <div class="cajon-galeria${esAcc ? ' contenida' : ''}" data-clona="${p.id}"></div>
+    ${p.video ? `
+    <figure class="ficha-video">
+      <div class="lienzo">
+        <img src="${esc(p.video.poster)}" width="720" height="1280" loading="lazy" decoding="async"
+             alt="Primer cuadro del video de ${esc(p.nombre)}">
+        <video muted loop playsinline preload="none" aria-label="Video de ${esc(p.nombre)}"></video>
+        <button class="reel-play" type="button" data-video="${esc(p.video.mp4)}"
+                aria-label="Ver cómo se mueve">
+          <span>${icono('play')}</span></button>
+      </div>
+      <figcaption>Cómo se mueve al caminar</figcaption>
+    </figure>` : ''}
     <h3 id="cajon-titulo">${esc(p.nombre)}</h3>
     <p style="color:var(--tinta-suave)">${esc(p.detalle)}</p>
 
@@ -592,56 +615,23 @@ function ponCorazones() {
   });
 }
 
-/* ---------------------------- 6. reels --------------------------------- */
-function pintaReels(reels) {
-  const cont = $('#rejilla-reels');
-  if (!cont.querySelector('.reel')) cont.innerHTML = reels.map((r) => `
-    <figure class="reel" data-code="${esc(r.code)}" data-mp4="${esc(r.mp4)}">
-      <div class="lienzo">
-        <img data-src="${esc(r.poster)}" width="720" height="1280" decoding="async" alt="${esc(r.alt)}">
-        <!-- El <video> nace SIN <source> y sin poster=, a proposito. Safari no
-             siempre respeta preload="none" y se ponia a jalar los seis videos
-             (15 MB) al abrir la pagina. El source se agrega al tocar play. -->
-        <video muted loop playsinline preload="none"
-               aria-label="${esc(r.alt)}"></video>
-        <button class="reel-play" type="button" aria-label="Reproducir: ${esc(r.titulo)}">
-          <span>${icono('play')}</span></button>
-      </div>
-      <figcaption>${esc(r.titulo)}</figcaption>
-    </figure>`).join('');
-
-  $('#rejilla-reels').addEventListener('click', (e) => {
-    const b = e.target.closest('.reel-play');
-    if (!b) return;
-    const fig = b.closest('.reel');
-    const v = $('video', fig);
-    /* uno a la vez: el ancho de banda en 4G no aguanta seis */
-    $$('.reel[data-jugando="si"]').forEach((otro) => {
-      if (otro === fig) return;
-      otro.dataset.jugando = 'no';
-      $('video', otro).pause();
-    });
-    if (fig.dataset.jugando === 'si') { v.pause(); fig.dataset.jugando = 'no'; return; }
-    /* el archivo se pide aqui, la primera vez que alguien lo toca */
-    if (!v.querySelector('source') && fig.dataset.mp4) {
-      const s = document.createElement('source');
-      s.src = fig.dataset.mp4; s.type = 'video/mp4';
-      v.appendChild(s);
-      v.load();
-    }
-    fig.dataset.jugando = 'si';
-    v.play().catch(() => { fig.dataset.jugando = 'no'; });
-  });
-
-  /* si el reel sale del encuadre, se pausa: no tiene sentido gastar batería */
-  const ojo = new IntersectionObserver((filas) => {
-    filas.forEach((f) => {
-      if (f.isIntersecting) return;
-      const fig = f.target;
-      if (fig.dataset.jugando === 'si') { $('video', fig).pause(); fig.dataset.jugando = 'no'; }
-    });
-  }, { threshold: 0.15 });
-  $$('.reel').forEach((r) => ojo.observe(r));
+/* -------------------- 6. el video de la ficha, a peticion ---------------- */
+/* El video ya no vive en una reja de reels: va dentro de la ficha del vestido,
+   que es donde resuelve la duda de como cae la falda al caminar. Y el archivo
+   se pide al tocar play, porque Safari no siempre respeta preload="none". */
+function tocaVideo(boton) {
+  const fig = boton.closest('.ficha-video');
+  const v = $('video', fig);
+  if (!v) return;
+  if (fig.dataset.jugando === 'si') { v.pause(); fig.dataset.jugando = 'no'; return; }
+  if (!v.querySelector('source') && boton.dataset.video) {
+    const s = document.createElement('source');
+    s.src = boton.dataset.video; s.type = 'video/mp4';
+    v.appendChild(s);
+    v.load();
+  }
+  fig.dataset.jugando = 'si';
+  v.play().catch(() => { fig.dataset.jugando = 'no'; });
 }
 
 /* -------------------------- 7. ubicación ------------------------------- */
@@ -653,6 +643,8 @@ bloque('ubicacion', function () {
 
   const wa = CONFIG.waCorto;
   $('#wa-directo').href = wa;
+  const wb = $('#wa-barra');
+  if (wb) wb.href = wa;
   $('#tel-wa').href = waLink('Hola SOFIBÉL, quiero preguntar por la renta de un vestido.');
   $('#wa-pie').href = waLink('Hola SOFIBÉL, quiero preguntar por la renta de un vestido.');
   $('#wa-venta').href = waLink('Hola SOFIBÉL, quiero preguntar por los vestidos que tienen en venta.');
@@ -993,7 +985,13 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('#limpiar-filtros, [data-limpiar]')) { limpiaFiltros(); return; }
   if (e.target.closest('#cerrar-cajon, #scrim')) { cierraCajon(); return; }
 
-  if (e.target.closest('#ver-favoritos')) {
+  if (e.target.closest('#abrir-filtros')) { abreFiltros(); return; }
+  if (e.target.closest('#cerrar-filtros, #aplicar-filtros, #scrim-filtros')) { cierraFiltros(); return; }
+
+  const play = e.target.closest('.reel-play[data-video]');
+  if (play) { tocaVideo(play); return; }
+
+  if (e.target.closest('#ver-favoritos, #barra-favoritos')) {
     if (Tienda.favoritos.size === 0) {
       Tienda.filtro.soloFavoritos = false;
       $('#vestidos').scrollIntoView({ behavior: 'smooth' });
@@ -1005,7 +1003,33 @@ document.addEventListener('click', (e) => {
   }
 });
 
+/* --------------------------- hoja de filtros ---------------------------- */
+const Filtros = { abierta: false, disparador: null };
+function abreFiltros() {
+  const h = $('#hoja-filtros'), s = $('#scrim-filtros');
+  if (!h) return;
+  Filtros.disparador = $('#abrir-filtros');
+  h.hidden = false; s.hidden = false;
+  void h.offsetWidth;
+  h.dataset.visible = 'si'; s.dataset.visible = 'si';
+  document.body.dataset.cajon = 'abierto';
+  $('#abrir-filtros').setAttribute('aria-expanded', 'true');
+  $('#cerrar-filtros').focus();
+  Filtros.abierta = true;
+}
+function cierraFiltros() {
+  const h = $('#hoja-filtros'), s = $('#scrim-filtros');
+  if (!h || !Filtros.abierta) return;
+  h.dataset.visible = 'no'; s.dataset.visible = 'no';
+  document.body.dataset.cajon = '';
+  Filtros.abierta = false;
+  $('#abrir-filtros').setAttribute('aria-expanded', 'false');
+  setTimeout(() => { h.hidden = true; s.hidden = true; }, 280);
+  if (Filtros.disparador) Filtros.disparador.focus();
+}
+
 document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && Filtros.abierta) { cierraFiltros(); return; }
   if (e.key === 'Escape' && Cajon.abierto) { cierraCajon(); return; }
   /* trampa de foco del cajón */
   if (e.key === 'Tab' && Cajon.abierto) {
@@ -1027,12 +1051,9 @@ document.addEventListener('keydown', (e) => {
     const v = enLinea
       ? JSON.parse(enLinea.textContent)
       : await fetch('data/vestidos.json').then((x) => x.json());
-    const r = await fetch('data/reels.json').then((x) => x.json()).catch(() => ({ reels: [] }));
     Tienda.datos = v;
     pintaCatalogo();
-    if (r.reels && r.reels.length) { pintaReels(r.reels); Difiere.mira(); }
-    else if ($('#rejilla-reels').querySelector('.reel')) { pintaReels([]); Difiere.mira(); }
-    else $('#reels').hidden = true;
+
   } catch (err) {
     /* si los datos no cargan, el catálogo no se queda en blanco callado */
     $('#rejilla-vestidos').innerHTML =

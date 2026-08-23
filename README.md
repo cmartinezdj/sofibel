@@ -135,6 +135,43 @@ WhatsApp, para que sobreviva a la navegación.
 
 ---
 
+## El orden de la pagina, y por que
+
+El sitio NO sigue el orden de Instagram. Sigue el flujo de las rentadoras que
+convierten (Rent the Runway, TrenLend, 1NS, Anaelle, Miami Dress Rental), que es
+distinto porque rentar un vestido es un proceso que la clienta no conoce:
+
+| # | Seccion | Por que ahi |
+|---|---|---|
+| 1 | Portada | Dice **que es** el negocio, no un eslogan. "El vestido de tu evento, en renta." |
+| 2 | Lo que incluye | Cinco iconos de confianza, como Miami Dress Rental. Contesta "y esto que me da". |
+| 3 | Como funciona | **Arriba, no al final.** Es lo primero que pregunta quien nunca ha rentado. |
+| 4 | Vestidos | El catalogo, con los clutches como riel al final de la seccion. |
+| 5 | Talla y ajuste | La duda que mas frena. RTR lo trata como pestaña de primer nivel. |
+| 6 | Precios | Que cuesta y que incluye. |
+| 7 | Agendar cita | **Antes del FAQ.** Quien ya se decidio no deberia tener que pasar por las dudas. |
+| 8 | Preguntas | Manejo de objeciones para quien todavia duda. |
+| 9 | Visitanos | Direccion, horario y ruta. |
+| 10 | Clientas | Prueba social, al final. Refuerza, no vende. |
+
+**Lo que se quito a proposito:** el manifiesto "wtf is comprar un vestido..." y la
+reja de reels. Las dos son voz de Instagram, no de una boutique. El video no se
+tiro: se movio **adentro de la ficha del vestido**, que es donde resuelve la duda
+real ("como cae la falda al caminar"). Cinco vestidos tienen el suyo.
+
+### Movil primero
+
+- **Barra fija abajo** con "Agendar cita" y WhatsApp. En un negocio que vive de la
+  cita, ese boton no puede quedarse arriba y perderse.
+- **Los filtros viven en una hoja que sube.** Color, largo y tela son 30 chips; en
+  una fila envuelta se comen media pantalla. Solo la ocasion queda a la vista,
+  porque es el eje por el que la clienta busca.
+- **Dos columnas de vestidos en telefono**, como en Instagram, no una.
+- La ficha del vestido es una hoja desde abajo en movil y un cajon lateral en
+  escritorio.
+
+---
+
 ## Peso: la regla que no hay que romper
 
 Carlos reporto que en **WiFi si abria y en 4G no**. Era peso, no red. Historial de la

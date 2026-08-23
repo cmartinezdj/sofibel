@@ -98,18 +98,6 @@ def figura_look(l, i):
       </a>
     </figure>'''
 
-def figura_reel(r):
-    return f'''<figure class="reel" data-code="{esc(r['code'])}" data-mp4="{esc(r['mp4'])}">
-      <div class="lienzo">
-        <img data-src="{esc(r['poster'])}" width="720" height="1280" decoding="async" alt="{esc(r['alt'])}">
-        <noscript><img src="{esc(r['poster'])}" width="720" height="1280" loading="lazy" decoding="async" alt="{esc(r['alt'])}"></noscript>
-        <video muted loop playsinline preload="none" aria-label="{esc(r['alt'])}"></video>
-        <button class="reel-play" type="button" aria-label="Reproducir: {esc(r['titulo'])}">
-          <span><svg class="icono" aria-hidden="true"><use href="#i-play"></use></svg></span></button>
-      </div>
-      <figcaption>{esc(r['titulo'])}</figcaption>
-    </figure>'''
-
 def chip_ocasion(o, n):
     return (f'<button class="chip" type="button" aria-pressed="false" data-f="ocasion" '
             f'data-v="{esc(o["id"])}">{esc(o["nombre"])}</button>')
@@ -123,16 +111,11 @@ def mete(doc, marca, contenido):
 
 def main():
     d = json.load(open(os.path.join(ROOT, 'data', 'vestidos.json'), encoding='utf-8'))
-    try:
-        rl = json.load(open(os.path.join(ROOT, 'data', 'reels.json'), encoding='utf-8'))['reels']
-    except Exception:
-        rl = []
     doc = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
 
     doc = mete(doc, 'CATALOGO', '\n'.join(tarjeta(p, i) for i, p in enumerate(d['vestidos'])))
     doc = mete(doc, 'ACCESORIOS', '\n'.join(tarjeta(p, 99) for p in d['accesorios']))
     doc = mete(doc, 'LOOKBOOK', '\n'.join(figura_look(l, i) for i, l in enumerate(d['lookbook'])))
-    doc = mete(doc, 'REELS', '\n'.join(figura_reel(r) for r in rl))
 
     # chips de ocasión: se escriben aquí para que la fila no aparezca vacía
     usadas = [o for o in d['ocasiones']
@@ -156,8 +139,9 @@ def main():
 
     open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(doc)
     kb = len(doc) / 1024
-    print(f"index.html reescrito: {len(d['vestidos'])} vestidos, {len(d['accesorios'])} accesorios, "
-          f"{len(d['lookbook'])} lookbook, {len(rl)} reels")
+    conVideo = sum(1 for v in d['vestidos'] if v.get('video'))
+    print(f"index.html reescrito: {len(d['vestidos'])} vestidos ({conVideo} con video en su ficha), "
+          f"{len(d['accesorios'])} accesorios, {len(d['lookbook'])} lookbook")
     print(f"pesa {kb:.0f} KB (con los datos en línea, que sustituyen una petición de "
           f"{len(crudo)/1024:.0f} KB)")
 

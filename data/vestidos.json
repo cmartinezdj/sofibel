@@ -142,7 +142,12 @@
    "precioVenta": null,
    "valorVestido": null,
    "tallas": null,
-   "disponible": true
+   "disponible": true,
+   "video": {
+    "mp4": "videos/web/Day00i0BYo8.mp4",
+    "poster": "videos/web/Day00i0BYo8.webp",
+    "instagram": "https://www.instagram.com/reel/Day00i0BYo8/"
+   }
   },
   {
    "id": "menta-lentejuela",
@@ -180,7 +185,12 @@
    "precioVenta": null,
    "valorVestido": null,
    "tallas": null,
-   "disponible": true
+   "disponible": true,
+   "video": {
+    "mp4": "videos/web/DcKWiMKsfFx.mp4",
+    "poster": "videos/web/DcKWiMKsfFx.webp",
+    "instagram": "https://www.instagram.com/reel/DcKWiMKsfFx/"
+   }
   },
   {
    "id": "terracota-halter",
@@ -290,7 +300,12 @@
    "precioVenta": null,
    "valorVestido": null,
    "tallas": null,
-   "disponible": true
+   "disponible": true,
+   "video": {
+    "mp4": "videos/web/DaeF2J6P32r.mp4",
+    "poster": "videos/web/DaeF2J6P32r.webp",
+    "instagram": "https://www.instagram.com/reel/DaeF2J6P32r/"
+   }
   },
   {
    "id": "fucsia-halter",
@@ -643,7 +658,12 @@
    "precioVenta": null,
    "valorVestido": null,
    "tallas": null,
-   "disponible": true
+   "disponible": true,
+   "video": {
+    "mp4": "videos/web/DYVy2gLyi1x.mp4",
+    "poster": "videos/web/DYVy2gLyi1x.webp",
+    "instagram": "https://www.instagram.com/reel/DYVy2gLyi1x/"
+   }
   },
   {
    "id": "azul-marino-encaje",
@@ -759,7 +779,12 @@
    "precioVenta": null,
    "valorVestido": null,
    "tallas": null,
-   "disponible": true
+   "disponible": true,
+   "video": {
+    "mp4": "videos/web/DYDnAcIBK_D.mp4",
+    "poster": "videos/web/DYDnAcIBK_D.webp",
+    "instagram": "https://www.instagram.com/reel/DYDnAcIBK_D/"
+   }
   },
   {
    "id": "verde-esmeralda-maxi",
