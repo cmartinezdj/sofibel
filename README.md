@@ -78,13 +78,21 @@ Para el rango general de la sección de precios, se edita el texto directamente 
    Los dos números después del archivo son el **centro del recorte** (x, y de 0 a 1). Sirven
    para que la cara y el escote no queden cortados: `.5, .42` recorta un poco arriba del centro.
 
-3. Corre el script. Recorta a 2:3, exporta webp en tres anchos y reescribe `data/vestidos.json`:
+3. Corre los dos scripts, en este orden. El primero recorta a 2:3, exporta webp
+   en tres anchos bajo un techo de bytes y reescribe `data/vestidos.json`. El
+   segundo escribe las tarjetas dentro de `index.html`:
 
 ```bash
-python3 tools/build_catalogo.py
+python3 tools/build_catalogo.py && python3 tools/render_html.py
 ```
 
 El color nuevo aparece solo en los filtros; no hay que tocar nada más.
+
+> **El catálogo va escrito en el HTML, no lo pinta JavaScript.** Es a propósito:
+> antes se armaba en el navegador a partir de un `fetch`, y eso son dos cosas que
+> pueden fallar (que el JS no corra, que el fetch no llegue), dejando a la clienta
+> mirando una página sin vestidos. Si editas `data/vestidos.json` a mano, corre
+> `render_html.py` para que el HTML se entere.
 
 ### Videos
 
@@ -142,7 +150,8 @@ Y abrir http://127.0.0.1:8811
 ## Qué hay dentro
 
 ```
-index.html          la página entera, con el sprite de iconos en línea y el JSON-LD
+index.html          la página entera: catálogo pre-generado, sprite de iconos y JSON-LD
+diagnostico.html    página de rescate: dice qué soporta un navegador y si los archivos bajan
 styles.css          sistema de diseño: tokens, tipografía, componentes
 app.js              catálogo, filtros, favoritos, ficha, reels y el flujo de cita
 data/
@@ -155,7 +164,7 @@ assets/
   logo-*.png        logotipo extraído de su propia publicación, en claro y oscuro
 images/vestidos/    webp del catálogo en 420/720/1080
 videos/web/         reels comprimidos y sus pósters
-tools/              los tres scripts que regeneran todo lo anterior
+tools/              los scripts que regeneran todo lo anterior, más la suite de pruebas de la cita
 ```
 
 ### Decisiones que conviene no deshacer sin querer
@@ -173,6 +182,20 @@ tools/              los tres scripts que regeneran todo lo anterior
   una pestaña oculta y el cajón se quedaría presente pero fuera de pantalla.
 - **`window.location.href`, no `window.open`,** para saltar a WhatsApp: en Safari de iOS el
   bloqueador de ventanas mata la pestaña nueva abierta dentro de un manejador.
+- **El contenido es visible por default.** La clase `.anima` es la que habilita el efecto de
+  entrada, la pone el script del `<head>` antes de pintar y **se quita sola a los 1.8 s** si
+  `app.js` no puso `window.__sofibelVivo`. Al revés (contenido invisible que JS revela)
+  cualquier falla de JavaScript dejaba la página en blanco.
+- **Cada bloque de `app.js` va en su propio `try`.** Eran sentencias sueltas y un error en la
+  primera mataba todas las demás.
+- **Las tarjetas son enlaces reales** a la publicación de Instagram; con JS el clic se
+  intercepta y abre la ficha. Así sirven sin JavaScript.
+- **Los `<video>` nacen sin `<source>`.** Safari no siempre respeta `preload="none"` y se
+  ponía a jalar los 15 MB de reels al abrir. El archivo se pide al tocar play.
+- **Respaldos de CSS moderno:** `color-mix()` cambiado por tokens rgba, `aspect-ratio` con
+  respaldo de padding porcentual (sin él las fotos medían cero de alto), y `vh` antes de `dvh`.
+- **Presupuesto de bytes por foto** en `build_catalogo.py`: 38 KB a 420w, 92 KB a 720w. Sin eso
+  el peso lo decidía el ruido de la imagen y había fotos de 278 KB.
 
 ---
 

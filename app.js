@@ -495,14 +495,26 @@ function mensajeVestido(p) {
 /* ----------------------------- render ---------------------------------- */
 function pintaCatalogo() {
   const d = Tienda.datos;
-  $('#rejilla-vestidos').innerHTML = d.vestidos.map((p, i) => tarjeta(p, i)).join('');
-  $('#riel-accesorios').innerHTML = d.accesorios.map((p, i) => tarjeta(p, i + 99)).join('');
-  $('#rejilla-look').innerHTML = d.lookbook.map((l, i) => `
-    <figure style="--i:${i % 4}">
-      <a href="${esc(l.origen)}" target="_blank" rel="noopener" aria-label="Ver esta foto en el Instagram de SOFIBÉL">
-        ${img(l, '(min-width:52rem) 23vw, 46vw', l.alt)}
-      </a>
-    </figure>`).join('');
+  /* El catálogo ya viene escrito en el HTML por tools/render_html.py. Solo se
+     pinta desde aquí si por alguna razón no estuviera: así el sitio funciona
+     igual con el HTML pre-generado y sin él. */
+  const rej = $('#rejilla-vestidos');
+  if (!rej.querySelector('.pieza')) {
+    rej.innerHTML = d.vestidos.map((p, i) => tarjeta(p, i)).join('');
+  }
+  const riel = $('#riel-accesorios');
+  if (!riel.querySelector('.pieza')) {
+    riel.innerHTML = d.accesorios.map((p, i) => tarjeta(p, i + 99)).join('');
+  }
+  const look = $('#rejilla-look');
+  if (!look.querySelector('figure')) {
+    look.innerHTML = d.lookbook.map((l, i) => `
+      <figure style="--i:${i % 4}">
+        <a href="${esc(l.origen)}" target="_blank" rel="noopener" aria-label="Ver esta foto en el Instagram de SOFIBÉL">
+          ${img(l, '(min-width:52rem) 23vw, 46vw', l.alt)}
+        </a>
+      </figure>`).join('');
+  }
   pintaChips();
   aplicaFiltro();
   pintaFavoritos();
@@ -512,7 +524,8 @@ function pintaCatalogo() {
 
 /* ---------------------------- 6. reels --------------------------------- */
 function pintaReels(reels) {
-  $('#rejilla-reels').innerHTML = reels.map((r) => `
+  const cont = $('#rejilla-reels');
+  if (!cont.querySelector('.reel')) cont.innerHTML = reels.map((r) => `
     <figure class="reel" data-code="${esc(r.code)}" data-mp4="${esc(r.mp4)}">
       <div class="lienzo">
         <img data-src="${esc(r.poster)}" width="720" height="1280" decoding="async" alt="${esc(r.alt)}">
@@ -889,7 +902,13 @@ document.addEventListener('click', (e) => {
   if (quita) { alternaFavorito(quita.dataset.quita); return; }
 
   const abre = e.target.closest('[data-abre]');
-  if (abre) { abreCajon(abre.dataset.abre, abre); return; }
+  if (abre) {
+    /* La tarjeta es un enlace real a la publicación de Instagram para que sirva
+       sin JavaScript. Con JavaScript, abre la ficha en vez de navegar. */
+    e.preventDefault();
+    abreCajon(abre.dataset.abre, abre);
+    return;
+  }
 
   const chip = e.target.closest('.chip');
   if (chip) {
@@ -930,13 +949,18 @@ document.addEventListener('keydown', (e) => {
 /* ------------------------------ 10. arranque --------------------------- */
 (async function arranca() {
   try {
-    const [v, r] = await Promise.all([
-      fetch('data/vestidos.json').then((x) => x.json()),
-      fetch('data/reels.json').then((x) => x.json()).catch(() => ({ reels: [] })),
-    ]);
+    /* Los datos van en línea dentro del HTML. Antes venían de un fetch, que es
+       una cosa más que puede fallar y dejar el catálogo vacío. El fetch se
+       queda solo como respaldo. */
+    const enLinea = document.getElementById('datos-sofibel');
+    const v = enLinea
+      ? JSON.parse(enLinea.textContent)
+      : await fetch('data/vestidos.json').then((x) => x.json());
+    const r = await fetch('data/reels.json').then((x) => x.json()).catch(() => ({ reels: [] }));
     Tienda.datos = v;
     pintaCatalogo();
     if (r.reels && r.reels.length) { pintaReels(r.reels); Difiere.mira(); }
+    else if ($('#rejilla-reels').querySelector('.reel')) { pintaReels([]); Difiere.mira(); }
     else $('#reels').hidden = true;
   } catch (err) {
     /* si los datos no cargan, el catálogo no se queda en blanco callado */

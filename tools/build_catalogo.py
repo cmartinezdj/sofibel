@@ -241,6 +241,18 @@ def crop_23(im, fx, fy):
     y = min(max(int(round(fy * h - nh / 2)), 0), h - nh)
     return im.crop((x, y, x + nw, y + nh))
 
+# Presupuesto de bytes por ancho. Sin esto, una foto con mucho follaje o
+# lentejuela salía en 278 KB y una lisa en 40 KB: el peso lo decidía el ruido de
+# la imagen, no su importancia. Se baja la calidad hasta entrar en el techo.
+TECHO_KB = {420: 38, 720: 92, 1080: 165}
+
+def guarda_bajo_techo(im, ruta, techo_kb):
+    for q in (80, 74, 68, 62, 56, 50, 44):
+        im.save(ruta, 'WEBP', quality=q, method=6)
+        if os.path.getsize(ruta) / 1024 <= techo_kb:
+            return q
+    return 44
+
 def export(archivo, fx, fy, slug, i):
     src = os.path.join(SRC, archivo)
     im = crop_23(Image.open(src).convert('RGB'), fx, fy)
@@ -250,9 +262,10 @@ def export(archivo, fx, fy, slug, i):
             continue
         r = im.resize((a, int(round(a / RATIO))), Image.LANCZOS)
         f = f'{slug}-{i}-{a}.webp'
-        r.save(os.path.join(OUT, f), 'WEBP', quality=80, method=6)
+        ruta = os.path.join(OUT, f)
+        guarda_bajo_techo(r, ruta, TECHO_KB[a])
         out.append({'w': a, 'src': f'images/vestidos/{f}',
-                    'kb': round(os.path.getsize(os.path.join(OUT, f)) / 1024)})
+                    'kb': round(os.path.getsize(ruta) / 1024)})
     return out
 
 def main():
@@ -284,8 +297,8 @@ def main():
     for arch, x0, y0, x1, y1, slug in EXTRAS:
         im = Image.open(os.path.join(SRC, arch)).convert('RGB').crop((x0, y0, x1, y1))
         for a in (420, 720):
-            im.resize((a, int(round(a / RATIO))), Image.LANCZOS).save(
-                os.path.join(OUT, f'{slug}-{a}.webp'), 'WEBP', quality=82, method=6)
+            guarda_bajo_techo(im.resize((a, int(round(a / RATIO))), Image.LANCZOS),
+                              os.path.join(OUT, f'{slug}-{a}.webp'), TECHO_KB[a])
         print(f'  {slug}  {im.size}')
 
     print('Vestidos:'); vestidos = build(V, 'vestido')
