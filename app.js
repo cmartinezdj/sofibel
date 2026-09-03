@@ -128,7 +128,7 @@ function rescate() {
     const r = document.querySelector('#rejilla-vestidos');
     if (r && !r.children.length) {
       r.innerHTML = '<p style="grid-column:1/-1;color:var(--tinta-suave)">' +
-        'No pudimos cargar el catálogo en este navegador. Escríbeles directo por ' +
+        'No pudimos cargar el catálogo en este navegador. Escríbenos por ' +
         '<a href="' + CONFIG.waCorto + '" target="_blank" rel="noopener">WhatsApp</a> ' +
         'y te mandan fotos de lo que tienen.</p>';
     }
@@ -461,7 +461,7 @@ function abreCajon(id, disparador) {
               : `<div><dt>Largo</dt><dd>${esc(p.largo)}</dd></div>
                  <div><dt>Tela o detalle</dt><dd>${esc(p.tela)}</dd></div>
                  ${nombresOcasion ? `<div><dt>Va para</dt><dd>${esc(nombresOcasion)}</dd></div>` : ''}`}
-      <div><dt>Talla</dt><dd>${p.tallas ? esc(p.tallas) : 'Se ve en el probador. Pregúntala por WhatsApp.'}</dd></div>
+      <div><dt>Talla</dt><dd>${p.tallas ? esc(p.tallas) : 'Se confirma en el probador. Pregúntala por WhatsApp.'}</dd></div>
       <div><dt>Precio</dt><dd>${p.precioRenta
         ? `Renta <span class="num">$${p.precioRenta.toLocaleString('es-MX')}</span> MXN`
         : 'SOFIBÉL lo cotiza por vestido, por WhatsApp o en tu cita.'}</dd></div>
@@ -471,7 +471,7 @@ function abreCajon(id, disparador) {
       <b>Cómo funciona</b>
       <ul>
         <li>${icono('check')} <span>Agendas cita y te lo pruebas en el probador.</span></li>
-        <li>${icono('check')} <span>Los ajustes se hacen en el local.</span></li>
+        <li>${icono('check')} <span>Los ajustes se hacen en el showroom.</span></li>
         <li>${icono('check')} <span>El precio, los días de renta y la garantía se cierran en tu cita.</span></li>
       </ul>
     </div>
@@ -711,7 +711,7 @@ function validaPaso(n) {
   if (n === 2) {
     const f = $('#fecha-cita').value;
     const malDia = !f || !CONFIG.horario[diaSemana(f)];
-    ok = marcaError('fecha-cita', malDia, !f ? 'Elige el día que te acomoda.' : 'Ese día está cerrado. Abren de lunes a sábado.') && ok;
+    ok = marcaError('fecha-cita', malDia, !f ? 'Elige el día de tu cita.' : 'Ese día está cerrado. Abrimos de lunes a sábado.') && ok;
     ok = marcaError('hora-cita', !$('#hora-cita').value) && ok;
   }
   if (n === 3) {
@@ -740,7 +740,7 @@ function llenaHoras() {
     sel.insertAdjacentHTML('beforeend', `<option value="${h}">${h}</option>`);
   }
   $('#ayuda-fecha-cita').textContent =
-    `Ese día abren de ${rango[0]} a ${rango[1]}. La última cita empieza a las ${aHora(ultimo)}.`;
+    `Ese día abrimos de ${rango[0]} a ${rango[1]}. La última cita empieza a las ${aHora(ultimo)}.`;
 }
 
 function pintaResumen() {
@@ -758,7 +758,7 @@ function pintaResumen() {
   caja.innerHTML = filas.length
     ? `<p class="rotulo">Así se va a enviar</p><dl>${filas.map(([k, v]) =>
         `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`
-    : `<p style="color:var(--tinta-suave)">Llena los pasos anteriores y aquí ves el resumen antes de enviar.</p>`;
+    : `<p style="color:var(--tinta-suave)">Completa los pasos anteriores y aquí aparece el resumen antes de enviar.</p>`;
 }
 
 function armaMensaje() {
@@ -771,7 +771,7 @@ function armaMensaje() {
   l.push(`WhatsApp: ${telBonito(g('telefono'))}`);
   l.push(`Evento: ${g('tipo-evento')}, el ${fechaLarga(g('fecha-evento'))}`);
   l.push(`Busco: ${g('busco')}`);
-  l.push(`Me acomoda: ${fechaLarga(g('fecha-cita'))} a las ${g('hora-cita')}`);
+  l.push(`Cita: ${fechaLarga(g('fecha-cita'))} a las ${g('hora-cita')}`);
   if (g('talla')) l.push(`Talla aproximada: ${g('talla')}`);
   if (g('acompanantes')) l.push(`Voy con: ${g('acompanantes')}`);
   if (lista.length) {
@@ -779,7 +779,7 @@ function armaMensaje() {
     l.push('Vestidos que me gustaron de su página:');
     lista.forEach((p, i) => l.push(`${i + 1}. ${p.nombre} (${p.color})`));
     if (Tienda.favoritos.size > lista.length) {
-      l.push(`Y ${Tienda.favoritos.size - lista.length} más que traigo apuntados.`);
+      l.push(`Y ${Tienda.favoritos.size - lista.length} más en mi lista.`);
     }
   }
   if (g('notas')) { l.push(''); l.push(`Notas: ${g('notas')}`); }
@@ -1068,8 +1068,8 @@ document.addEventListener('keydown', (e) => {
   } catch (err) {
     /* si los datos no cargan, el catálogo no se queda en blanco callado */
     $('#rejilla-vestidos').innerHTML =
-      `<p style="grid-column:1/-1;color:var(--tinta-suave)">No pude cargar el catálogo.
-       Recarga la página, o escríbeles directo por
+      `<p style="grid-column:1/-1;color:var(--tinta-suave)">No pudimos cargar el catálogo.
+       Recarga la página, o escríbenos por
        <a href="${CONFIG.waCorto}" target="_blank" rel="noopener">WhatsApp</a>.</p>`;
     console.error(err);
   }

@@ -215,6 +215,42 @@ Si prefieres no usar token, el botón **Descargar** baja el `index.html` y el
 
 ---
 
+## Cómo se escribe en el sitio
+
+El texto está en español de México neutro y profesional. Si vas a cambiar una
+frase (a mano o desde el modo operador), estas son las reglas que ya sigue todo
+el sitio:
+
+1. **Una sola voz: la boutique en primera persona del plural.** «te recibimos»,
+   «lo ajustamos», «abrimos de lunes a sábado». Nunca hablar del negocio en
+   tercera persona («abren», «sus clientas», «te dicen»): la página *es* de
+   SOFIBÉL, no habla de SOFIBÉL. A la clienta siempre de **tú**.
+2. **Sin coloquialismos.** Ya se quitaron: batallar, acomodar como «convenir»,
+   «le das enviar», «ahí mismo», «traes una idea», «que no se te olvide»,
+   «descolgados». Tampoco españolismos: en México es *celular*, no *móvil*.
+3. **Nunca hablar del sitio frente a la clienta.** Nada de «esto es lo que sí
+   está publicado» o «este sitio no lo inventa». Si un dato se define en la
+   cita, se dice así de simple: «lo acordamos al apartar tu vestido».
+4. **No inventes datos del negocio.** Ver la tabla de arriba. El único precio
+   que existe es el `$499` y es de **venta** de pre-loved en la venta anual,
+   nunca de renta.
+5. **Sin guiones largos** (`—`, `–`). Coma, punto, paréntesis o dos puntos.
+6. **Mismo largo.** La página ya está maquetada; una frase que crece más de
+   ~15 % rompe el diseño en móvil.
+7. **Un solo nombre por cosa:** renta, probador, **showroom** (no «el local»),
+   cita, ajustes, tintorería, **talla** (no «talle», que en el catálogo sí se
+   usa pero como término de confección: «drapeado al talle»), clutch, bolsa de
+   noche, celular, apartar, anticipo, garantía, pre-loved, valet parking.
+
+El lema del pie, **«Amamos verlas brillar.»**, es de SOFIBÉL: aparece en varias
+publicaciones suyas de Instagram. No es texto inventado y se conserva tal cual.
+
+Ojo: el mismo texto vive en tres lugares y hay que cambiarlo en los tres.
+El visible en `index.html`, el de los mensajes de WhatsApp y errores en
+`app.js`, y el de los `meta` y el JSON-LD del `<head>` y del final de
+`index.html` (ese sí va en tercera persona, nombrando a SOFIBÉL: es para
+Google, no para la clienta).
+
 ## Referencia visual: hauteline.com
 
 Carlos pidio "una pagina parecida a esta" apuntando a [hauteline.com](https://hauteline.com).
