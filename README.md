@@ -135,6 +135,86 @@ WhatsApp, para que sobreviva a la navegación.
 
 ---
 
+## Modo operador: editar el sitio desde el navegador
+
+Se entra agregando `?editar` a la dirección:
+
+```
+https://cmartinezdj.github.io/sofibel/?editar
+```
+
+Aparece una barra arriba con todo lo que se puede mover.
+
+| Qué | Cómo |
+|---|---|
+| **Textos** | Botón "Textos". Tocas cualquier texto de la página y lo escribes encima. |
+| **Mover** | Botón "Mover". Arrastras las tarjetas del catálogo, los mosaicos de ocasión y las fotos de clientas. |
+| **Fotos** | Pasas el puntero sobre una foto y sale "Cambiar foto": eliges otra del sitio o subes una nueva desde el teléfono. La nueva se recorta a 2:3 y se guarda en tres tamaños, todo en el navegador. |
+| **Colores** | Los seis tokens que se pueden mover sin romper contrastes. Se ven al momento. |
+| **Catálogo** | Nombre, precio de renta, precio de venta y tallas de cada pieza. En cuanto pones un precio, la tarjeta deja de decir "Precio por WhatsApp". |
+| **Ocultar** | Cada sección trae su etiqueta con "ocultar" y "mostrar". Útil mientras el sitio está en construcción. |
+
+Todo se guarda **en tu navegador** conforme editas, así que puedes cerrar y volver
+al día siguiente. Nada es público hasta que le das a **Publicar**.
+
+### Cómo publica
+
+GitHub Pages es estático: no hay servidor donde guardar. El editor escribe de
+vuelta al repositorio, y hay una decisión que sostiene todo:
+
+> **No se serializa la página viva. Se pide el `index.html` original, se parsea
+> aparte, y los cambios se aplican sobre esa copia limpia.**
+
+Es necesario porque `app.js` le mete cosas a la página que no van en el archivo
+(los corazones, la segunda foto del hover, el contenido de la ficha, los chips de
+filtro) y le quita otras (el `data-src` de cada imagen, que se vuelve `src` al
+cargarla). Guardar la página viva congelaría todo eso dentro del HTML: el sitio
+publicado quedaría roto y volvería a pesar megabytes. Con la copia limpia, lo que
+se publica es el archivo de verdad más las ediciones, y nada más.
+
+Antes de publicar corre una **revisión** que se niega si el HTML salió mutilado:
+comprueba que estén los marcadores del catálogo, el sprite de iconos, los enlaces
+a `app.js` y `styles.css`, que haya al menos 30 tarjetas, y que no se haya colado
+nada del editor. Si algo falta, no publica y dice qué.
+
+Los cambios del catálogo se escriben **en los dos lados**: en `data/vestidos.json`
+y en las tarjetas del HTML. El JSON es el que manda para `tools/render_html.py`,
+así que si solo se tocara el HTML, la próxima corrida del script borraría todo.
+
+Se publica en **un solo commit** con la API de Git de GitHub, no archivo por
+archivo, para que el sitio nunca quede a medias.
+
+### El token
+
+Para publicar hace falta un token propio de GitHub. Conviene que sea:
+
+- de **acceso preciso** (fine-grained), no clásico
+- limitado **solo** al repositorio `cmartinezdj/sofibel`
+- con un único permiso: **Contents → Read and write**
+- con fecha de caducidad
+
+Se guarda en la sesión del navegador y solo viaja hacia `api.github.com`. Si
+marcas "recordarlo en este dispositivo" pasa a almacenamiento permanente: **no lo
+hagas en una computadora compartida**, porque quien la use podría escribir en el
+repositorio.
+
+Si prefieres no usar token, el botón **Descargar** baja el `index.html` y el
+`vestidos.json` ya con los cambios, y esos archivos se pueden subir a mano.
+
+### Lo que hay que saber
+
+- **La dirección del editor es pública.** Cualquiera que la adivine ve los
+  controles, pero sus cambios se quedan en su propio navegador y no puede
+  publicar sin token. El token es el candado de verdad, no la dirección.
+- El sitio normal **no carga nada del editor**: sin `?editar` no se piden
+  `editor.js` ni `editor.css`. Verificado.
+- Si el editor avisa que "la página viva y el archivo no coinciden", la edición
+  de texto se apaga sola. Pasa si alguien tocó el HTML a mano de una forma que el
+  editor no puede seguir; lo demás sigue funcionando.
+- `window.__ed` queda disponible en modo editor para diagnóstico.
+
+---
+
 ## Referencia visual: hauteline.com
 
 Carlos pidio "una pagina parecida a esta" apuntando a [hauteline.com](https://hauteline.com).
